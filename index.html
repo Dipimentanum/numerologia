@@ -64,6 +64,21 @@ function reduzirComDesdobramento(numero) {
   };
 }
 
+// Redução simples (sem mostrar contas e sem números mestres)
+function reduzirSimples(numero) {
+  let atual = numero;
+
+  while (atual > 9) {
+    atual = atual
+      .toString()
+      .split('')
+      .map(Number)
+      .reduce((a, b) => a + b, 0);
+  }
+
+  return `${numero} / ${atual}`;
+}
+  
 // Função que calcula os números do nome
 function calcularNumeroNome(nome, tipo) {
   nome = nome
@@ -111,6 +126,19 @@ function imprimirRelatorio() {
 function calcular() {
   const nome = document.getElementById("nome").value;
   const data = document.getElementById("data").value;
+  
+// Separar data de nascimento
+const [ano, mes, dia] = data.split("-");
+
+// Dia de nascimento (ex: 17 / 8)
+const diaNascimento = reduzirSimples(Number(dia));
+
+// Mês de nascimento (ex: 11 / 2)
+const mesNascimento = reduzirSimples(Number(mes));
+
+// Ano de nascimento (ex: 1987 / 7)
+const anoNascimento = reduzirSimples(Number(ano));
+  
 
   if (!nome || !data) {
     alert("Por favor, preenche todos os campos.");
@@ -136,6 +164,10 @@ function calcular() {
 
   // Montar resultado com ícones ⓘ e descrições
   document.getElementById("resultado").innerHTML =
+    <strong>Dia de Nascimento:</strong> ${diaNascimento}<br><br>
+    <strong>Mês de Nascimento:</strong> ${mesNascimento}<br><br>
+    <strong>Ano de Nascimento:</strong> ${anoNascimento}<br><br>
+
     `<strong>Caminho de Vida:</strong> ${caminhoVida.texto}
      <span class="info" onclick="toggleDescricao('caminho')"> ⓘ</span>
      <div id="desc-caminho" style="display:none;">
