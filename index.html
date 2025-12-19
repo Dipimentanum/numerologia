@@ -92,6 +92,16 @@ function calcularNumeroNome(nome, tipo) {
   return reduzirComDesdobramento(soma);
 }
 
+// Função para mostrar/esconder descrição
+function toggleDescricao(id) {
+  const elem = document.getElementById('desc-' + id);
+  if (elem.style.display === 'none') {
+    elem.style.display = 'block';
+  } else {
+    elem.style.display = 'none';
+  }
+}
+
 // Função principal
 function calcular() {
   const nome = document.getElementById("nome").value;
@@ -119,27 +129,42 @@ function calcular() {
     expressao.final + alma.final + personalidade.final;
   const pontoForte = reduzirComDesdobramento(somaPontoForte);
 
-  // Montar resultado com descrições
+  // Montar resultado com ícones ⓘ e descrições
   document.getElementById("resultado").innerHTML =
-    `<strong>Caminho de Vida:</strong> ${caminhoVida.final}<br>
-     <em>${caminhoVida.texto}</em><br>
-     <small>É a soma de todos os dígitos da tua data de nascimento e revela o teu caminho de vida, os desafios e talentos naturais que irás desenvolver.</small><br><br>
+    `<strong>Caminho de Vida:</strong> ${caminhoVida.final} 
+     <em>${caminhoVida.texto}</em>
+     <span class="info" onclick="toggleDescricao('caminho')"> ⓘ</span>
+     <div id="desc-caminho" style="display:none;">
+     É a soma de todos os dígitos da tua data de nascimento e revela o teu caminho de vida, os desafios e talentos naturais que irás desenvolver.
+     </div><br><br>
 
-     <strong>Expressão:</strong> ${expressao.final}<br>
-     <em>${expressao.texto}</em><br>
-     <small>É a soma de todas as letras do nome completo e mostra os teus talentos, capacidades e como te expressas no mundo.</small><br><br>
+     <strong>Expressão:</strong> ${expressao.final} 
+     <em>${expressao.texto}</em>
+     <span class="info" onclick="toggleDescricao('exp')"> ⓘ</span>
+     <div id="desc-exp" style="display:none;">
+     É a soma de todas as letras do nome completo e mostra os teus talentos, capacidades e como te expressas no mundo.
+     </div><br><br>
 
-     <strong>Alma:</strong> ${alma.final}<br>
-     <em>${alma.texto}</em><br>
-     <small>É calculada apenas com as vogais do nome e revela as tuas motivações internas e necessidades emocionais.</small><br><br>
+     <strong>Alma:</strong> ${alma.final} 
+     <em>${alma.texto}</em>
+     <span class="info" onclick="toggleDescricao('alma')"> ⓘ</span>
+     <div id="desc-alma" style="display:none;">
+     É calculada apenas com as vogais do nome e revela as tuas motivações internas e necessidades emocionais.
+     </div><br><br>
 
-     <strong>Personalidade (Imagem):</strong> ${personalidade.final}<br>
-     <em>${personalidade.texto}</em><br>
-     <small>É calculada apenas com as consoantes do nome e mostra a imagem que transmites aos outros.</small><br><br>
+     <strong>Personalidade (Imagem):</strong> ${personalidade.final} 
+     <em>${personalidade.texto}</em>
+     <span class="info" onclick="toggleDescricao('pers')"> ⓘ</span>
+     <div id="desc-pers" style="display:none;">
+     É calculada apenas com as consoantes do nome e mostra a imagem que transmites aos outros.
+     </div><br><br>
 
-     <strong>Ponto Forte de Personalidade:</strong> ${pontoForte.final}<br>
-     <em>${expressao.final} + ${alma.final} + ${personalidade.final} = ${pontoForte.texto}</em><br>
-     <small>É a soma de Expressão, Alma e Personalidade e indica onde existe maior coerência e força.</small>`;
+     <strong>Ponto Forte de Personalidade:</strong> ${pontoForte.final} 
+     <em>${expressao.final} + ${alma.final} + ${personalidade.final} = ${pontoForte.texto}</em>
+     <span class="info" onclick="toggleDescricao('ponto')"> ⓘ</span>
+     <div id="desc-ponto" style="display:none;">
+     É a soma de Expressão, Alma e Personalidade e indica onde existe maior coerência e força.
+     </div><br><br>`;
 }
 </script>
 
