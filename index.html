@@ -102,6 +102,17 @@ function toggleDescricao(id) {
   }
 }
 
+// Função para imprimir relatório
+function imprimirRelatorio() {
+  const conteudo = document.getElementById("resultado").innerHTML;
+  const janela = window.open('', '', 'height=600,width=800');
+  janela.document.write('<html><head><title>Relatório de Numerologia</title></head><body>');
+  janela.document.write(conteudo);
+  janela.document.write('</body></html>');
+  janela.document.close();
+  janela.print();
+}
+
 // Função principal
 function calcular() {
   const nome = document.getElementById("nome").value;
@@ -164,7 +175,9 @@ function calcular() {
      <span class="info" onclick="toggleDescricao('ponto')"> ⓘ</span>
      <div id="desc-ponto" style="display:none;">
      É a soma de Expressão, Alma e Personalidade e indica onde existe maior coerência e força.
-     </div><br><br>`;
+     </div><br><br>
+
+     <button onclick="imprimirRelatorio()">Imprimir Relatório</button>`;
 }
 </script>
 
