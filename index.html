@@ -49,28 +49,45 @@ const tabela = {
   I:9, R:9
 };
 
-function reduzirNumero(n) {
-  while (n > 9 && n !== 11 && n !== 22 && n !== 33) {
-    n = n.toString().split('').reduce((a, b) => a + Number(b), 0);
+function reduzirComDesdobramento(numero) {
+  let passos = [];
+  let atual = numero;
+
+  while (atual > 9 && atual !== 11 && atual !== 22 && atual !== 33) {
+    let digitos = atual.toString().split('').map(Number);
+    passos.push(digitos.join(" + "));
+    atual = digitos.reduce((a, b) => a + b, 0);
   }
-  return n;
+
+  let texto = passos.length > 0
+    ? `${numero} → ${passos.join(" = ")} = ${atual}`
+    : `${atual}`;
+
+  return {
+    final: atual,
+    texto: texto
+  };
 }
 
 function calcularNumeroNome(nome, tipo) {
-  nome = nome.toUpperCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+  nome = nome
+    .toUpperCase()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "");
+
   let soma = 0;
+  const vogais = "AEIOU";
 
   for (let letra of nome) {
     if (!tabela[letra]) continue;
 
-    const vogais = "AEIOU";
     if (tipo === "alma" && !vogais.includes(letra)) continue;
     if (tipo === "personalidade" && vogais.includes(letra)) continue;
 
     soma += tabela[letra];
   }
 
-  return reduzirNumero(soma);
+  return reduzirComDesdobramento(soma);
 }
 
 function calcular() {
@@ -83,9 +100,11 @@ function calcular() {
   }
 
   // Caminho de Vida
-  const numerosData = data.replaceAll("-", "").split("");
-  let somaData = numerosData.reduce((a, b) => a + Number(b), 0);
-  const caminhoVida = reduzirNumero(somaData);
+  let somaData = 0;
+  for (let n of data.replaceAll("-", "")) {
+    somaData += Number(n);
+  }
+  const caminhoVida = reduzirComDesdobramento(somaData);
 
   // Números do nome
   const expressao = calcularNumeroNome(nome, "expressao");
@@ -94,10 +113,18 @@ function calcular() {
 
   document.getElementById("resultado").innerHTML =
     `<strong>Nome:</strong> ${nome}<br><br>
-     <strong>Caminho de Vida:</strong> ${caminhoVida}<br>
-     <strong>Expressão:</strong> ${expressao}<br>
-     <strong>Alma:</strong> ${alma}<br>
-     <strong>Personalidade:</strong> ${personalidade}`;
+
+     <strong>Caminho de Vida:</strong> ${caminhoVida.final}<br>
+     <em>${caminhoVida.texto}</em><br><br>
+
+     <strong>Expressão:</strong> ${expressao.final}<br>
+     <em>${expressao.texto}</em><br><br>
+
+     <strong>Alma:</strong> ${alma.final}<br>
+     <em>${alma.texto}</em><br><br>
+
+     <strong>Personalidade:</strong> ${personalidade.final}<br>
+     <em>${personalidade.texto}</em>`;
 }
 </script>
 
