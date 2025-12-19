@@ -49,6 +49,7 @@ const tabela = {
   I:9, R:9
 };
 
+// Função que reduz o número e guarda o desdobramento
 function reduzirComDesdobramento(numero) {
   let passos = [];
   let atual = numero;
@@ -69,6 +70,7 @@ function reduzirComDesdobramento(numero) {
   };
 }
 
+// Função que calcula os números do nome
 function calcularNumeroNome(nome, tipo) {
   nome = nome
     .toUpperCase()
@@ -90,6 +92,7 @@ function calcularNumeroNome(nome, tipo) {
   return reduzirComDesdobramento(soma);
 }
 
+// Função principal
 function calcular() {
   const nome = document.getElementById("nome").value;
   const data = document.getElementById("data").value;
@@ -116,24 +119,27 @@ function calcular() {
     expressao.final + alma.final + personalidade.final;
   const pontoForte = reduzirComDesdobramento(somaPontoForte);
 
+  // Montar resultado com descrições
   document.getElementById("resultado").innerHTML =
-    `<strong>Nome:</strong> ${nome}<br><br>
-
-     <strong>Caminho de Vida:</strong> ${caminhoVida.final}<br>
-     <em>${caminhoVida.texto}</em><br><br>
+    `<strong>Caminho de Vida:</strong> ${caminhoVida.final}<br>
+     <em>${caminhoVida.texto}</em><br>
+     <small>É a soma de todos os dígitos da tua data de nascimento e revela o teu caminho de vida, os desafios e talentos naturais que irás desenvolver.</small><br><br>
 
      <strong>Expressão:</strong> ${expressao.final}<br>
-     <em>${expressao.texto}</em><br><br>
+     <em>${expressao.texto}</em><br>
+     <small>É a soma de todas as letras do nome completo e mostra os teus talentos, capacidades e como te expressas no mundo.</small><br><br>
 
      <strong>Alma:</strong> ${alma.final}<br>
-     <em>${alma.texto}</em><br><br>
+     <em>${alma.texto}</em><br>
+     <small>É calculada apenas com as vogais do nome e revela as tuas motivações internas e necessidades emocionais.</small><br><br>
 
      <strong>Personalidade (Imagem):</strong> ${personalidade.final}<br>
-     <em>${personalidade.texto}</em><br><br>
+     <em>${personalidade.texto}</em><br>
+     <small>É calculada apenas com as consoantes do nome e mostra a imagem que transmites aos outros.</small><br><br>
 
      <strong>Ponto Forte de Personalidade:</strong> ${pontoForte.final}<br>
-     <em>${expressao.final} + ${alma.final} + ${personalidade.final}
-     = ${pontoForte.texto}</em>`;
+     <em>${expressao.final} + ${alma.final} + ${personalidade.final} = ${pontoForte.texto}</em><br>
+     <small>É a soma de Expressão, Alma e Personalidade e indica onde existe maior coerência e força.</small>`;
 }
 </script>
 
