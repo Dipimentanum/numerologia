@@ -44,121 +44,58 @@
   <script>
     // ---------- FUNÇÕES BASE ----------
 
-// ---------- FUNÇÕES BASE ----------
-
-function reduzirSemMestres(numero) {
-  let atual = numero;
-  while (atual > 9) {
-    atual = atual
-      .toString()
-      .split('')
-      .map(Number)
-      .reduce((a, b) => a + b, 0);
-  }
-  return atual;
-}
-
-function reduzirComMestres(numero) {
-  let atual = numero;
-
-  while (atual > 9) {
-    if ([11, 22, 33, 44].includes(atual)) {
+    function reduzirSemMestres(numero) {
+      let atual = numero;
+      while (atual > 9) {
+        atual = atual
+          .toString()
+          .split('')
+          .map(Number)
+          .reduce((a, b) => a + b, 0);
+      }
       return atual;
     }
-    atual = atual
-      .toString()
-      .split('')
-      .map(Number)
-      .reduce((a, b) => a + b, 0);
-  }
-  return atual;
-}
 
-function desdobramentoComMestres(numero) {
-  let soma = numero;
-  let passos = [numero];
-
-  while (soma > 9) {
-    if ([11, 22, 33, 44].includes(soma)) {
-      break;
+    function reduzirComMestres(numero) {
+      let atual = numero;
+      while (atual > 9) {
+        if ([11, 22, 33, 44].includes(atual)) {
+          return atual;
+        }
+        atual = atual
+          .toString()
+          .split('')
+          .map(Number)
+          .reduce((a, b) => a + b, 0);
+      }
+      return atual;
     }
-    soma = soma
-      .toString()
-      .split('')
-      .map(Number)
-      .reduce((a, b) => a + b, 0);
-    passos.push(soma);
-  }
 
-  return passos.join(" → ");
-}
+    function desdobramentoComMestres(numero) {
+      let soma = numero;
+      let passos = [numero];
 
-// Função para mostrar/esconder explicação
-function toggleInfo(id) {
-  const el = document.getElementById(id);
-  el.style.display = el.style.display === "none" ? "block" : "none";
-}
+      while (soma > 9) {
+        if ([11, 22, 33, 44].includes(soma)) {
+          break;
+        }
+        soma = soma
+          .toString()
+          .split('')
+          .map(Number)
+          .reduce((a, b) => a + b, 0);
+        passos.push(soma);
+      }
 
-// ---------- CÁLCULOS ----------
+      return passos.join(" → ");
+    }
 
-function calcular() {
-  const data = document.getElementById("data").value;
-  if (!data) {
-    alert("Por favor, introduz a data de nascimento.");
-    return;
-  }
-
-  const [ano, mes, dia] = data.split("-").map(Number);
-
-  // Reduções simples
-  const diaReduzido = reduzirSemMestres(dia);
-  const mesReduzido = reduzirSemMestres(mes);
-  const anoReduzido = reduzirSemMestres(ano);
-
-  // Caminho de Vida (soma de todos os dígitos da data)
-  const digitosData = data.replaceAll("-", "").split("").map(Number);
-  const somaCaminhoVida = digitosData.reduce((a, b) => a + b, 0);
-
-  const caminhoVidaFinal = reduzirComMestres(somaCaminhoVida);
-  const caminhoVidaDesdobrado = desdobramentoComMestres(somaCaminhoVida);
-
-  // Via de Missão
-  const somaMissao = diaReduzido + mesReduzido;
-  const viaMissaoFinal = reduzirComMestres(somaMissao);
-  const viaMissaoDesdobrada = desdobramentoComMestres(somaMissao);
-
-  // Mostrar resultados
-  document.getElementById("resultado").innerHTML = `
-    <h2>Resultados</h2>
-
-    <strong>
-      Caminho de Vida
-      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-cv')">ⓘ</span>
-    </strong><br>
-
-    <div id="info-cv" style="display:none; font-size:14px; margin:6px 0;">
-      O Caminho de Vida representa a direção principal da tua vida, as aprendizagens
-      fundamentais e o tipo de experiências que és chamada a viver ao longo do teu percurso.
-      É calculado através da soma de todos os algarismos da data de nascimento.
-    </div>
-
-    ${caminhoVidaDesdobrado} / ${caminhoVidaFinal}
-    <br><br>
-
-    <strong>
-      Via de Missão
-      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-vm')">ⓘ</span>
-    </strong><br>
-
-    <div id="info-vm" style="display:none; font-size:14px; margin:6px 0;">
-      A Via de Missão indica de que forma colocas o teu potencial em ação no mundo.
-      É calculada a partir da soma do dia e do mês de nascimento.
-    </div>
-
-    ${viaMissaoDesdobrada} / ${viaMissaoFinal}
-    <br><br>
-  `;
-}
+    // Função para mostrar/esconder explicação (global)
+    function toggleInfo(id) {
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.style.display = el.style.display === "none" ? "block" : "none";
+    }
 
     // ---------- CÁLCULOS ----------
 
@@ -176,8 +113,8 @@ function calcular() {
       const mesReduzido = reduzirSemMestres(mes);
       const anoReduzido = reduzirSemMestres(ano);
 
-     // Caminho de Vida (soma de todos os dígitos da data)
-      const digitosData = data.replaceAll("-", "").split("").map(Number);
+      // Caminho de Vida (soma de todos os dígitos da data)
+      const digitosData = data.replace(/-/g, "").split("").map(Number);
       const somaCaminhoVida = digitosData.reduce((a, b) => a + b, 0);
 
       const caminhoVidaFinal = reduzirComMestres(somaCaminhoVida);
@@ -187,39 +124,40 @@ function calcular() {
       const somaMissao = diaReduzido + mesReduzido;
       const viaMissaoFinal = reduzirComMestres(somaMissao);
       const viaMissaoDesdobrada = desdobramentoComMestres(somaMissao);
-      function toggleInfo(id) {
-      const el = document.getElementById(id);
-      el.style.display = el.style.display === "none" ? "block" : "none";
-}
+
       // Mostrar resultados
       document.getElementById("resultado").innerHTML = `
         <h2>Resultados</h2>
 
         <strong>
-        Caminho de Vida
-        <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-cv')">ⓘ</span>
+          Caminho de Vida
+          <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-cv')">ⓘ</span>
         </strong><br>
 
         <div id="info-cv" style="display:none; font-size:14px; margin:6px 0;">
-        O Caminho de Vida representa a direção principal da tua vida, as aprendizagens
-        fundamentais e o tipo de experiências que és chamada a viver ao longo do teu percurso.
-        É calculado através da soma de todos os algarismos da data de nascimento.
+          O Caminho de Vida representa a direção principal da tua vida, as aprendizagens
+          fundamentais e o tipo de experiências que és chamada a viver ao longo do teu percurso.
+          É calculado através da soma de todos os algarismos da data de nascimento.
         </div>
 
-${caminhoVidaDesdobrado} / ${caminhoVidaFinal}
-<br><br>
-  <strong>
-  Via de Missão
-  <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-vm')">ⓘ</span>
-</strong><br>
+        ${caminhoVidaDesdobrado} / ${caminhoVidaFinal}
+        <br><br>
 
-<div id="info-vm" style="display:none; font-size:14px; margin:6px 0;">
-  A Via de Missão indica de que forma colocas o teu potencial em ação no mundo.
-  É calculada a partir da soma do dia e do mês de nascimento.
-</div>
+        <strong>
+          Via de Missão
+          <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-vm')">ⓘ</span>
+        </strong><br>
 
-${viaMissaoDesdobrada} / ${viaMissaoFinal}
+        <div id="info-vm" style="display:none; font-size:14px; margin:6px 0;">
+          A Via de Missão indica de que forma colocas o teu potencial em ação no mundo.
+          É calculada a partir da soma do dia e do mês de nascimento.
+        </div>
 
+        ${viaMissaoDesdobrada} / ${viaMissaoFinal}
+        <br><br>
+
+        <strong>Ano reduzido:</strong> ${anoReduzido}
+      `;
     }
   </script>
 
