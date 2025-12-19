@@ -6,201 +6,135 @@
   <style>
     body {
       font-family: Arial, sans-serif;
-      max-width: 500px;
+      max-width: 700px;
       margin: 40px auto;
       line-height: 1.6;
     }
     input, button {
-      width: 100%;
-      padding: 10px;
-      margin-top: 10px;
+      padding: 8px;
+      font-size: 16px;
+      margin-top: 6px;
+    }
+    button {
+      cursor: pointer;
     }
     .resultado {
-      margin-top: 20px;
-      padding: 15px;
-      background: #f4f4f4;
+      margin-top: 30px;
+      padding: 20px;
+      border: 1px solid #ccc;
     }
   </style>
 </head>
+
 <body>
 
-<h2>Calculadora de Numerologia</h2>
+  <h1>Calculadora de Numerologia</h1>
 
-<label>Nome completo:</label>
-<input type="text" id="nome" placeholder="Ex: Maria da Silva">
+  <label>
+    Data de nascimento:
+    <br>
+    <input type="date" id="data">
+  </label>
 
-<label>Data de nascimento:</label>
-<input type="date" id="data">
+  <br><br>
+  <button onclick="calcular()">Calcular</button>
 
-<button onclick="calcular()">Calcular</button>
+  <div id="resultado" class="resultado"></div>
 
-<div class="resultado" id="resultado"></div>
+  <script>
+    // ---------- FUNÇÕES BASE ----------
 
-<script>
-const tabela = {
-  A:1, J:1, S:1,
-  B:2, K:2, T:2,
-  C:3, L:3, U:3,
-  D:4, M:4, V:4,
-  E:5, N:5, W:5,
-  F:6, O:6, X:6,
-  G:7, P:7, Y:7,
-  H:8, Q:8, Z:8,
-  I:9, R:9
-};
+    function reduzirSemMestres(numero) {
+      let atual = numero;
+      while (atual > 9) {
+        atual = atual
+          .toString()
+          .split('')
+          .map(Number)
+          .reduce((a, b) => a + b, 0);
+      }
+      return atual;
+    }
 
-// Função que reduz o número e mostra original / final
-function reduzirComDesdobramento(numero) {
-  let atual = numero;
+    function reduzirComMestres(numero) {
+      let atual = numero;
 
-  while (atual > 9 && atual !== 11 && atual !== 22 && atual !== 33) {
-    let digitos = atual.toString().split('').map(Number);
-    atual = digitos.reduce((a, b) => a + b, 0);
-  }
+      while (atual > 9) {
+        if ([11, 22, 33, 44].includes(atual)) {
+          return atual;
+        }
+        atual = atual
+          .toString()
+          .split('')
+          .map(Number)
+          .reduce((a, b) => a + b, 0);
+      }
+      return atual;
+    }
 
-  return {
-    final: atual,
-    texto: `${numero} / ${atual}` // formato simplificado
-  };
-}
+    function desdobramentoComMestres(numero) {
+      let soma = numero;
+      let passos = [numero];
 
-// Redução simples (sem mostrar contas e sem números mestres)
-function reduzirSimples(numero) {
-  let atual = numero;
+      while (soma > 9) {
+        if ([11, 22, 33, 44].includes(soma)) {
+          break;
+        }
+        soma = soma
+          .toString()
+          .split('')
+          .map(Number)
+          .reduce((a, b) => a + b, 0);
+        passos.push(soma);
+      }
 
-  while (atual > 9) {
-    atual = atual
-      .toString()
-      .split('')
-      .map(Number)
-      .reduce((a, b) => a + b, 0);
-  }
+      return passos.join(" → ");
+    }
 
-  return `${numero} / ${atual}`;
-}
-  
-// Função que calcula os números do nome
-function calcularNumeroNome(nome, tipo) {
-  nome = nome
-    .toUpperCase()
-    .normalize("NFD")
-    .replace(/[\u0300-\u036f]/g, "");
+    // ---------- CÁLCULOS ----------
 
-  let soma = 0;
-  const vogais = "AEIOU";
+    function calcular() {
+      const data = document.getElementById("data").value;
+      if (!data) {
+        alert("Por favor, introduz a data de nascimento.");
+        return;
+      }
 
-  for (let letra of nome) {
-    if (!tabela[letra]) continue;
+      const [ano, mes, dia] = data.split("-").map(Number);
 
-    if (tipo === "alma" && !vogais.includes(letra)) continue;
-    if (tipo === "personalidade" && vogais.includes(letra)) continue;
+      // Reduções simples
+      const diaReduzido = reduzirSemMestres(dia);
+      const mesReduzido = reduzirSemMestres(mes);
+      const anoReduzido = reduzirSemMestres(ano);
 
-    soma += tabela[letra];
-  }
+      // Caminho de Vida
+      const somaData = dia + mes + ano;
+      const caminhoVidaFinal = reduzirComMestres(somaData);
+      const caminhoVidaDesdobrado = desdobramentoComMestres(somaData);
 
-  return reduzirComDesdobramento(soma);
-}
+      // Via de Missão
+      const somaMissao = diaReduzido + mesReduzido;
+      const viaMissaoFinal = reduzirComMestres(somaMissao);
+      const viaMissaoDesdobrada = desdobramentoComMestres(somaMissao);
 
-// Função para mostrar/esconder descrição
-function toggleDescricao(id) {
-  const elem = document.getElementById('desc-' + id);
-  if (elem.style.display === 'none') {
-    elem.style.display = 'block';
-  } else {
-    elem.style.display = 'none';
-  }
-}
+      // Mostrar resultados
+      document.getElementById("resultado").innerHTML = `
+        <h2>Resultados</h2>
 
-// Função para imprimir relatório
-function imprimirRelatorio() {
-  const conteudo = document.getElementById("resultado").innerHTML;
-  const janela = window.open('', '', 'height=600,width=800');
-  janela.document.write('<html><head><title>Relatório de Numerologia</title></head><body>');
-  janela.document.write(conteudo);
-  janela.document.write('</body></html>');
-  janela.document.close();
-  janela.print();
-}
+        <strong>Caminho de Vida:</strong><br>
+        ${caminhoVidaDesdobrado} / ${caminhoVidaFinal}
+        <br><br>
 
-// Função principal
-function calcular() {
-  const nome = document.getElementById("nome").value;
-  const data = document.getElementById("data").value;
-  
-// Separar data de nascimento
-const [ano, mes, dia] = data.split("-");
+        <strong>Dia de Nascimento:</strong> ${dia} / ${diaReduzido}<br>
+        <strong>Mês de Nascimento:</strong> ${mes} / ${mesReduzido}<br>
+        <strong>Ano de Nascimento:</strong> ${ano} / ${anoReduzido}
+        <br><br>
 
-// Dia de nascimento (ex: 17 / 8)
-const diaNascimento = reduzirSimples(Number(dia));
-
-// Mês de nascimento (ex: 11 / 2)
-const mesNascimento = reduzirSimples(Number(mes));
-
-// Ano de nascimento (ex: 1987 / 7)
-const anoNascimento = reduzirSimples(Number(ano));
-  
-
-  if (!nome || !data) {
-    alert("Por favor, preenche todos os campos.");
-    return;
-  }
-
-  // Caminho de Vida
-  let somaData = 0;
-  for (let n of data.replaceAll("-", "")) {
-    somaData += Number(n);
-  }
-  const caminhoVida = reduzirComDesdobramento(somaData);
-
-  // Números do nome
-  const expressao = calcularNumeroNome(nome, "expressao");
-  const alma = calcularNumeroNome(nome, "alma");
-  const personalidade = calcularNumeroNome(nome, "personalidade");
-
-  // Ponto Forte de Personalidade
-  const somaPontoForte =
-    expressao.final + alma.final + personalidade.final;
-  const pontoForte = reduzirComDesdobramento(somaPontoForte);
-
-  // Montar resultado com ícones ⓘ e descrições
-  document.getElementById("resultado").innerHTML =
-    <strong>Dia de Nascimento:</strong> ${diaNascimento}<br><br>
-    <strong>Mês de Nascimento:</strong> ${mesNascimento}<br><br>
-    <strong>Ano de Nascimento:</strong> ${anoNascimento}<br><br>
-
-    `<strong>Caminho de Vida:</strong> ${caminhoVida.texto}
-     <span class="info" onclick="toggleDescricao('caminho')"> ⓘ</span>
-     <div id="desc-caminho" style="display:none;">
-     É a soma de todos os dígitos da tua data de nascimento e revela o teu caminho de vida, os desafios e talentos naturais que irás desenvolver.
-     </div><br><br>
-
-     <strong>Expressão:</strong> ${expressao.texto}
-     <span class="info" onclick="toggleDescricao('exp')"> ⓘ</span>
-     <div id="desc-exp" style="display:none;">
-     É a soma de todas as letras do nome completo e mostra os teus talentos, capacidades e como te expressas no mundo.
-     </div><br><br>
-
-     <strong>Alma:</strong> ${alma.texto}
-     <span class="info" onclick="toggleDescricao('alma')"> ⓘ</span>
-     <div id="desc-alma" style="display:none;">
-     É calculada apenas com as vogais do nome e revela as tuas motivações internas e necessidades emocionais.
-     </div><br><br>
-
-     <strong>Personalidade (Imagem):</strong> ${personalidade.texto}
-     <span class="info" onclick="toggleDescricao('pers')"> ⓘ</span>
-     <div id="desc-pers" style="display:none;">
-     É calculada apenas com as consoantes do nome e mostra a imagem que transmites aos outros.
-     </div><br><br>
-
-     <strong>Ponto Forte de Personalidade:</strong> ${expressao.final} + ${alma.final} + ${personalidade.final} = ${pontoForte.texto}
-     <span class="info" onclick="toggleDescricao('ponto')"> ⓘ</span>
-     <div id="desc-ponto" style="display:none;">
-     É a soma de Expressão, Alma e Personalidade e indica onde existe maior coerência e força.
-     </div><br><br>
-
-     <button onclick="imprimirRelatorio()">Imprimir Relatório</button>`;
-}
-</script>
+        <strong>Via de Missão:</strong><br>
+        ${viaMissaoDesdobrada} / ${viaMissaoFinal}
+      `;
+    }
+  </script>
 
 </body>
 </html>
