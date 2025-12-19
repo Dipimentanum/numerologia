@@ -111,6 +111,11 @@ function calcular() {
   const alma = calcularNumeroNome(nome, "alma");
   const personalidade = calcularNumeroNome(nome, "personalidade");
 
+  // Ponto Forte de Personalidade
+  const somaPontoForte =
+    expressao.final + alma.final + personalidade.final;
+  const pontoForte = reduzirComDesdobramento(somaPontoForte);
+
   document.getElementById("resultado").innerHTML =
     `<strong>Nome:</strong> ${nome}<br><br>
 
@@ -123,8 +128,12 @@ function calcular() {
      <strong>Alma:</strong> ${alma.final}<br>
      <em>${alma.texto}</em><br><br>
 
-     <strong>Personalidade:</strong> ${personalidade.final}<br>
-     <em>${personalidade.texto}</em>`;
+     <strong>Personalidade (Imagem):</strong> ${personalidade.final}<br>
+     <em>${personalidade.texto}</em><br><br>
+
+     <strong>Ponto Forte de Personalidade:</strong> ${pontoForte.final}<br>
+     <em>${expressao.final} + ${alma.final} + ${personalidade.final}
+     = ${pontoForte.texto}</em>`;
 }
 </script>
 
