@@ -90,169 +90,219 @@
       return passos.join(" → ");
     }
 
-    // Função para mostrar/esconder explicação
-    function toggleInfo(id) {
-      const el = document.getElementById(id);
-      el.style.display = el.style.display === "none" ? "block" : "none";
+// Função para mostrar/esconder explicação
+function toggleInfo(id) {
+  const el = document.getElementById(id);
+  el.style.display = el.style.display === "none" ? "block" : "none";
+}
+
+// Redução sem mestres
+function reduzirSemMestres(numero) {
+  let atual = numero;
+  while (atual > 9) {
+    atual = atual
+      .toString()
+      .split('')
+      .map(Number)
+      .reduce((a, b) => a + b, 0);
+  }
+  return atual;
+}
+
+// Redução com mestres
+function reduzirComMestres(numero) {
+  let atual = numero;
+  while (atual > 9) {
+    if ([11, 22, 33, 44].includes(atual)) {
+      return atual;
     }
+    atual = atual
+      .toString()
+      .split('')
+      .map(Number)
+      .reduce((a, b) => a + b, 0);
+  }
+  return atual;
+}
 
-    // Ajuste especial para desafios (nunca 9)
-    function ajustarDesafio(num) {
-      return num === 9 ? 0 : num;
-    }
+// Desdobramento com mestres
+function desdobramentoComMestres(numero) {
+  let soma = numero;
+  let passos = [numero];
+  while (soma > 9) {
+    if ([11, 22, 33, 44].includes(soma)) break;
+    soma = soma
+      .toString()
+      .split('')
+      .map(Number)
+      .reduce((a, b) => a + b, 0);
+    passos.push(soma);
+  }
+  return passos.join(" → ");
+}
 
-    // Função principal
-    function calcular() {
-      const data = document.getElementById("data").value;
-      if (!data) {
-        alert("Por favor, introduz a data de nascimento.");
-        return;
-      }
+// Ajuste especial para desafios (nunca 9)
+function ajustarDesafio(num) {
+  return num === 9 ? 0 : num;
+}
 
-      const [ano, mes, dia] = data.split("-").map(Number);
+// Função principal
+function calcular() {
+  const data = document.getElementById("data").value;
+  if (!data) {
+    alert("Por favor, introduz a data de nascimento.");
+    return;
+  }
 
-      // Reduções simples
-      const diaReduzido = reduzirSemMestres(dia);
-      const mesReduzido = reduzirSemMestres(mes);
-      const anoReduzido = reduzirSemMestres(ano);
+  const [ano, mes, dia] = data.split("-").map(Number);
 
-      // Caminho de Vida
-      const digitosData = data.replaceAll("-", "").split("").map(Number);
-      const somaCaminhoVida = digitosData.reduce((a, b) => a + b, 0);
-      const caminhoVidaFinal = reduzirComMestres(somaCaminhoVida);
-      const caminhoVidaDesdobrado = desdobramentoComMestres(somaCaminhoVida);
+  // Reduções simples
+  const diaReduzido = reduzirSemMestres(dia);
+  const mesReduzido = reduzirSemMestres(mes);
+  const anoReduzido = reduzirSemMestres(ano);
 
-      // Via de Missão
-      const somaMissao = diaReduzido + mesReduzido;
-      const viaMissaoFinal = reduzirComMestres(somaMissao);
-      const viaMissaoDesdobrada = desdobramentoComMestres(somaMissao);
+  // Caminho de Vida
+  const digitosData = data.replaceAll("-", "").split("").map(Number);
+  const somaCaminhoVida = digitosData.reduce((a, b) => a + b, 0);
+  const caminhoVidaFinal = reduzirComMestres(somaCaminhoVida);
+  const caminhoVidaDesdobrado = desdobramentoComMestres(somaCaminhoVida);
 
-      // Plano Kármico / Heranças
-      const primeiraHeranca = Math.abs(diaReduzido - mesReduzido);
-      const segundaHeranca = Math.abs(diaReduzido - anoReduzido);
-      const terceiraHeranca = `${primeiraHeranca} / ${segundaHeranca}`;
+  // Via de Missão
+  const somaMissao = diaReduzido + mesReduzido;
+  const viaMissaoFinal = reduzirComMestres(somaMissao);
+  const viaMissaoDesdobrada = desdobramentoComMestres(somaMissao);
 
-      // Desafios Kármicos (números ajustados)
-      // NOTE: ajustei primeiroDesafio para ser numérico (primeiraHeranca),
-      // mas podes alterar a fórmula conforme a tua regra de numerologia.
-      const primeiroDesafio = ajustarDesafio(primeiraHeranca);
-      const segundoDesafio = ajustarDesafio(Math.abs(mesReduzido - anoReduzido));
-      const terceiroDesafio = ajustarDesafio(Math.abs(primeiraHeranca + segundaHeranca - segundoDesafio));
+  // Plano Kármico
+  const primeiraHeranca = Math.abs(diaReduzido - mesReduzido);
+  const segundaHeranca = Math.abs(diaReduzido - anoReduzido);
+  const terceiraHeranca = `${primeiraHeranca} / ${segundaHeranca}`;
 
-      const karmaAcumulado = primeiraHeranca + segundaHeranca + segundoDesafio + terceiroDesafio;
+  const primeiroDesafio = terceiraHeranca;
+  const segundoDesafio = ajustarDesafio(Math.abs(mesReduzido - anoReduzido));
+  const terceiroDesafio = ajustarDesafio(Math.abs(primeiraHeranca + segundaHeranca - segundoDesafio));
 
-      // Ciclos de Vida
-      const primeiroCiclo = reduzirComMestres(diaReduzido + mesReduzido);
-      const segundoCiclo = reduzirComMestres(diaReduzido + anoReduzido);
-      const terceiroCiclo = reduzirComMestres(primeiroCiclo + segundoCiclo);
-      const quartoCiclo = reduzirComMestres(mesReduzido + anoReduzido);
+  const karmaAcumulado = primeiraHeranca + segundaHeranca + segundoDesafio + terceiroDesafio;
 
-      const duracaoPrimeiroCiclo = 36 - caminhoVidaFinal;
-      const duracaoOutrosCiclos = 9;
-      const objetivoKarmico = primeiroCiclo + segundoCiclo + terceiroCiclo + quartoCiclo;
+  // Ciclos de Vida (Pináculos)
+  const primeiroCiclo = reduzirComMestres(diaReduzido + mesReduzido);
+  const segundoCiclo = reduzirComMestres(diaReduzido + anoReduzido);
+  const terceiroCiclo = reduzirComMestres(primeiroCiclo + segundoCiclo);
+  const quartoCiclo = reduzirComMestres(mesReduzido + anoReduzido);
 
-      // Mostrar resultados
-      document.getElementById("resultado").innerHTML = `
-        <h2>Resultados</h2>
+  // Idades de cada ciclo
+  const inicio1 = 0;
+  const fim1 = 36 - caminhoVidaFinal - 1;
+  const inicio2 = fim1 + 1;
+  const fim2 = inicio2 + 9 - 1;
+  const inicio3 = fim2 + 1;
+  const fim3 = inicio3 + 9 - 1;
+  const inicio4 = fim3 + 1;
+  const fim4 = inicio4 + 9 - 1;
 
-        <strong>
-          Caminho de Vida
-          <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-cv')">ⓘ</span>
-        </strong><br>
-        <div id="info-cv" style="display:none; font-size:14px; margin:6px 0;">
-          O Caminho de Vida representa a direção principal da tua vida, as aprendizagens fundamentais e o tipo de experiências que és chamada a viver ao longo do teu percurso.
-          É calculado através da soma de todos os algarismos da data de nascimento.
-        </div>
-        ${caminhoVidaDesdobrado} / ${caminhoVidaFinal}
-        <br><br>
+  const objetivoKarmico = primeiroCiclo + segundoCiclo + terceiroCiclo + quartoCiclo;
 
-        <strong>
-          Via de Missão
-          <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-vm')">ⓘ</span>
-        </strong><br>
-        <div id="info-vm" style="display:none; font-size:14px; margin:6px 0;">
-          A Via de Missão indica de que forma colocas o teu potencial em ação no mundo. É calculada a partir da soma do dia e do mês de nascimento.
-        </div>
-        ${viaMissaoDesdobrada} / ${viaMissaoFinal}
-        <br><br>
+  // Mostrar resultados
+  document.getElementById("resultado").innerHTML = `
+    <h2>Resultados</h2>
 
-        <strong>
-          Dia de Nascimento
-          <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-dia')">ⓘ</span>
-        </strong><br>
-        <div id="info-dia" style="display:none; font-size:14px; margin:6px 0;">
-          O Dia de Nascimento mostra características pessoais e talentos inatos. É calculado reduzindo o dia do nascimento a um só dígito.
-        </div>
-        ${dia} / ${diaReduzido}
-        <br><br>
+    <strong>
+      Caminho de Vida
+      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-cv')">ⓘ</span>
+    </strong><br>
+    <div id="info-cv" style="display:none; font-size:14px; margin:6px 0;">
+      O Caminho de Vida representa a direção principal da tua vida, as aprendizagens fundamentais e o tipo de experiências que és chamada a viver ao longo do teu percurso.
+      É calculado através da soma de todos os algarismos da data de nascimento.
+    </div>
+    ${caminhoVidaDesdobrado} / ${caminhoVidaFinal}
+    <br><br>
 
-        <strong>
-          Mês de Nascimento
-          <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-mes')">ⓘ</span>
-        </strong><br>
-        <div id="info-mes" style="display:none; font-size:14px; margin:6px 0;">
-          O Mês de Nascimento indica a forma como te relacionas com os ciclos da vida e o mundo. É calculado reduzindo o mês do nascimento a um só dígito.
-        </div>
-        ${mes} / ${mesReduzido}
-        <br><br>
+    <strong>
+      Via de Missão
+      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-vm')">ⓘ</span>
+    </strong><br>
+    <div id="info-vm" style="display:none; font-size:14px; margin:6px 0;">
+      A Via de Missão indica de que forma colocas o teu potencial em ação no mundo. É calculada a partir da soma do dia e do mês de nascimento.
+    </div>
+    ${viaMissaoDesdobrada} / ${viaMissaoFinal}
+    <br><br>
 
-        <strong>
-          Ano de Nascimento
-          <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-ano')">ⓘ</span>
-        </strong><br>
-        <div id="info-ano" style="display:none; font-size:14px; margin:6px 0;">
-          O Ano de Nascimento revela influências gerais e tendências da tua vida. É calculado reduzindo o ano de nascimento a um só dígito.
-        </div>
-        ${ano} / ${anoReduzido}
-        <br><br>
+    <strong>
+      Dia de Nascimento
+      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-dia')">ⓘ</span>
+    </strong><br>
+    <div id="info-dia" style="display:none; font-size:14px; margin:6px 0;">
+      O Dia de Nascimento mostra características pessoais e talentos inatos. É calculado reduzindo o dia do nascimento a um só dígito.
+    </div>
+    ${dia} / ${diaReduzido}
+    <br><br>
 
-        <strong>
-          Heranças Kármicas
-          <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-herancas')">ⓘ</span>
-        </strong><br>
-        <div id="info-herancas" style="display:none; font-size:14px; margin:6px 0;">
-          As Heranças Kármicas mostram talentos ou bloqueios herdados de vidas passadas. Cada herança é analisada aos pares para entender a dinâmica.
-        </div>
-        1ª Herança: ${primeiraHeranca}<br>
-        2ª Herança: ${segundaHeranca}<br>
-        3ª Herança (par): ${terceiraHeranca}<br><br>
+    <strong>
+      Mês de Nascimento
+      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-mes')">ⓘ</span>
+    </strong><br>
+    <div id="info-mes" style="display:none; font-size:14px; margin:6px 0;">
+      O Mês de Nascimento indica a forma como te relacionas com os ciclos da vida e o mundo. É calculado reduzindo o mês do nascimento a um só dígito.
+    </div>
+    ${mes} / ${mesReduzido}
+    <br><br>
 
-        <strong>
-          Desafios Kármicos
-          <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-desafios')">ⓘ</span>
-        </strong><br>
-        <div id="info-desafios" style="display:none; font-size:14px; margin:6px 0;">
-          Os Desafios Kármicos indicam obstáculos ou lições que precisas de superar na vida. Vistos aos pares, ajudam a compreender padrões que se repetem.
-        </div>
-        1º Desafio: ${primeiroDesafio}<br>
-        2º Desafio: ${segundoDesafio}<br>
-        3º Desafio: ${terceiroDesafio}<br><br>
+    <strong>
+      Ano de Nascimento
+      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-ano')">ⓘ</span>
+    </strong><br>
+    <div id="info-ano" style="display:none; font-size:14px; margin:6px 0;">
+      O Ano de Nascimento revela influências gerais e tendências da tua vida. É calculado reduzindo o ano de nascimento a um só dígito.
+    </div>
+    ${ano} / ${anoReduzido}
+    <br><br>
 
-        <strong>
-          Karma Acumulado
-          <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-karma')">ⓘ</span>
-        </strong><br>
-        <div id="info-karma" style="display:none; font-size:14px; margin:6px 0;">
-          O Karma Acumulado é a soma das heranças e desafios, mostrando o impacto global das experiências kármicas.
-        </div>
-        ${karmaAcumulado}
-        <br><br>
+    <strong>
+      Heranças Kármicas
+      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-herancas')">ⓘ</span>
+    </strong><br>
+    <div id="info-herancas" style="display:none; font-size:14px; margin:6px 0;">
+      As Heranças Kármicas mostram talentos ou bloqueios herdados de vidas passadas. Cada herança é analisada aos pares para entender a dinâmica.
+    </div>
+    1ª Herança: ${primeiraHeranca}<br>
+    2ª Herança: ${segundaHeranca}<br>
+    3ª Herança (par): ${terceiraHeranca}<br><br>
 
-        <strong>
-          Ciclos de Vida (Pináculos)
-          <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-ciclos')">ⓘ</span>
-        </strong><br>
-        <div id="info-ciclos" style="display:none; font-size:14px; margin:6px 0;">
-          Os Ciclos de Vida mostram diferentes fases da tua vida, os desafios e oportunidades de cada período. Cada ciclo tem uma duração e um número associado, indicando temas importantes.
-        </div>
-        1º Ciclo: ${primeiroCiclo} (duração: ${duracaoPrimeiroCiclo} anos)<br>
-        2º Ciclo: ${segundoCiclo} (duração: ${duracaoOutrosCiclos} anos)<br>
-        3º Ciclo: ${terceiroCiclo} (duração: ${duracaoOutrosCiclos} anos)<br>
-        4º Ciclo: ${quartoCiclo} (duração: ${duracaoOutrosCiclos} anos)<br>
-        Objetivo Kármico: ${objetivoKarmico}
-        <br><br>
-      `;
-    }
+    <strong>
+      Desafios Kármicos
+      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-desafios')">ⓘ</span>
+    </strong><br>
+    <div id="info-desafios" style="display:none; font-size:14px; margin:6px 0;">
+      Os Desafios Kármicos indicam obstáculos ou lições que precisas de superar na vida. Vistos aos pares, ajudam a compreender padrões que se repetem.
+    </div>
+    1º Desafio: ${primeiroDesafio}<br>
+    2º Desafio: ${segundoDesafio}<br>
+    3º Desafio: ${terceiroDesafio}<br><br>
+
+    <strong>
+      Karma Acumulado
+      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-karma')">ⓘ</span>
+    </strong><br>
+    <div id="info-karma" style="display:none; font-size:14px; margin:6px 0;">
+      O Karma Acumulado é a soma das heranças e desafios, mostrando o impacto global das experiências kármicas.
+    </div>
+    ${karmaAcumulado}
+    <br><br>
+
+    <strong>
+      Ciclos de Vida (Pináculos)
+      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-ciclos')">ⓘ</span>
+    </strong><br>
+    <div id="info-ciclos" style="display:none; font-size:14px; margin:6px 0;">
+      Os Ciclos de Vida mostram diferentes fases da tua vida, os desafios e oportunidades de cada período. Cada ciclo tem um número e indica idades específicas.
+    </div>
+    1º Ciclo: ${primeiroCiclo} (dos ${inicio1} aos ${fim1} anos)<br>
+    2º Ciclo: ${segundoCiclo} (dos ${inicio2} aos ${fim2} anos)<br>
+    3º Ciclo: ${terceiroCiclo} (dos ${inicio3} aos ${fim3} anos)<br>
+    4º Ciclo: ${quartoCiclo} (dos ${inicio4} aos ${fim4} anos)<br>
+    Objetivo Kármico: ${objetivoKarmico}
+    <br><br>
+  `;
+}
 
   </script>
 
