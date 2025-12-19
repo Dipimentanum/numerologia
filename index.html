@@ -188,6 +188,56 @@
   `;
 }
 
+    <strong>
+    Heranças Kármicas
+    <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-herancas')">ⓘ</span>
+    </strong><br>
+    <div id="info-herancas" style="display:none; font-size:14px; margin:6px 0;">
+    As Heranças Kármicas mostram talentos ou bloqueios herdados de vidas passadas.
+    Cada herança é analisada aos pares para entender a dinâmica.
+</div>
+1ª Herança: ${primeiraHeranca}<br>
+2ª Herança: ${segundaHeranca}<br>
+3ª Herança (par): ${terceiraHeranca}<br><br>
+
+<strong>
+  Desafios Kármicos
+  <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-desafios')">ⓘ</span>
+</strong><br>
+<div id="info-desafios" style="display:none; font-size:14px; margin:6px 0;">
+  Os Desafios Kármicos indicam obstáculos ou lições que precisas de superar na vida.
+  Vistos aos pares, ajudam a compreender padrões que se repetem.
+</div>
+1º Desafio: ${primeiroDesafio}<br>
+2º Desafio: ${segundoDesafioAjustado}<br>
+3º Desafio: ${terceiroDesafioAjustado}<br><br>
+
+<strong>
+  Karma Acumulado
+  <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-karma')">ⓘ</span>
+</strong><br>
+<div id="info-karma" style="display:none; font-size:14px; margin:6px 0;">
+  O Karma Acumulado é a soma das heranças e desafios, mostrando o impacto global das experiências kármicas.
+</div>
+${karmaAcumulado}
+<br><br>
+
+  <strong>
+  Ciclos de Vida (Pináculos)
+  <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-ciclos')">ⓘ</span>
+</strong><br>
+<div id="info-ciclos" style="display:none; font-size:14px; margin:6px 0;">
+  Os Ciclos de Vida mostram diferentes fases da tua vida, os desafios e oportunidades de cada período.
+  Cada ciclo tem uma duração e um número associado, indicando temas importantes.
+</div>
+1º Ciclo: ${primeiroCiclo} (duração: ${duracaoPrimeiroCiclo} anos)<br>
+2º Ciclo: ${segundoCiclo} (duração: ${duracaoOutrosCiclos} anos)<br>
+3º Ciclo: ${terceiroCiclo} (duração: ${duracaoOutrosCiclos} anos)<br>
+4º Ciclo: ${quartoCiclo} (duração: ${duracaoOutrosCiclos} anos)<br>
+Objetivo Kármico: ${objetivoKarmico}
+<br><br>
+
+
   </script>
 
 </body>
