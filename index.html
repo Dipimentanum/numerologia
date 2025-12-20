@@ -148,7 +148,7 @@
       const terceiraHerancaPar = `${Math.abs(diaReduzido - mesReduzido)} - ${Math.abs(diaReduzido - anoReduzido)}`;
 
       // Desafios Kármicos
-      const primeiroDesafio = terceiraHerancaPar; // par da 3ª herança
+      const primeiroDesafio = terceiraHerancaPar; 
       const segundoDesafio = `${mesReduzido} - ${anoReduzido}`;
       const terceiroDesafioPar = `${Math.abs(Math.abs(diaReduzido - mesReduzido) - Math.abs(diaReduzido - anoReduzido))} - ${Math.abs(mesReduzido - anoReduzido)}`;
 
@@ -187,10 +187,15 @@
       const numeroImagem = reduzirComMestres(somaLetras(consoantes));
 
       const pontoForte = numeroExpressao + numeroAlma + numeroImagem;
-      const numeroFinal = reduzirComMestres(caminhoVidaFinal + pontoForte);
-      const numeroPoder = reduzirComMestres(numeroExpressao + caminhoVidaFinal);
-      const numeroStress = reduzirComMestres(numeroExpressao - caminhoVidaFinal);
-      const numeroReativo = reduzirComMestres(numeroFinal + numeroFinal);
+      const pontoForteReduzido = reduzirComMestres(pontoForte);
+
+      const numeroFinal = caminhoVidaFinal + pontoForteReduzido;
+      const numeroFinalReduzido = reduzirComMestres(numeroFinal);
+
+      const numeroPoder = numeroExpressao + caminhoVidaFinal;
+      const numeroStress = numeroExpressao - caminhoVidaFinal;
+      const numeroReativo = numeroFinalReduzido + numeroFinalReduzido;
+      const numeroReativoReduzido = reduzirComMestres(numeroReativo);
 
       // Mostrar resultados
       document.getElementById("resultado").innerHTML = `
@@ -270,17 +275,17 @@
         <div class="bloco">
           <strong>Ponto Forte da Personalidade <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-pfp')">ⓘ</span></strong><br>
           <div id="info-pfp" style="display:none; font-size:14px; margin:6px 0;">
-            Soma do Número de Expressão + Número de Alma + Número de Imagem.
+            Soma do Número de Expressão + Número de Alma + Número de Imagem, reduzido a um dígito.
           </div>
-          <span class="numero-destaque">${pontoForte}</span>
+          <span class="numero-destaque">${pontoForteReduzido}</span>
         </div>
 
         <div class="bloco">
           <strong>Número Final, Poder, Stress, Número Reativo</strong><br>
-          Número Final: <span class="numero-destaque">${numeroFinal} / ${reduzirComMestres(numeroFinal)}</span><br>
+          Número Final: <span class="numero-destaque">${numeroFinalReduzido}</span><br>
           Número do Poder: <span class="numero-destaque">${numeroPoder}</span><br>
           Número do Stress: <span class="numero-destaque">${numeroStress}</span><br>
-          Número Reativo: <span class="numero-destaque">${numeroReativo} / ${reduzirComMestres(numeroReativo)}</span>
+          Número Reativo: <span class="numero-destaque">${numeroReativoReduzido}</span>
         </div>
       `;
     }
