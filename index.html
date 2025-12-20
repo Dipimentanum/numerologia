@@ -50,7 +50,6 @@
     }
   </style>
 </head>
-
 <body>
   <h1>Calculadora de Numerologia</h1>
 
@@ -148,22 +147,27 @@
       const viaMissaoDesdobrada = desdobramentoComMestres(somaMissao);
 
       // Heranças Kármicas
-      const primeiraHeranca = Math.abs(diaReduzido - mesReduzido);
-      const segundaHeranca = Math.abs(diaReduzido - anoReduzido);
-      const terceiraHeranca = `${primeiraHeranca} - ${segundaHeranca}`;
+      const primeiraHeranca = `${diaReduzido} - ${mesReduzido} = ${Math.abs(diaReduzido - mesReduzido)}`;
+      const segundaHeranca = `${diaReduzido} - ${anoReduzido} = ${Math.abs(diaReduzido - anoReduzido)}`;
+      const terceiraHeranca = `${Math.abs(diaReduzido - mesReduzido)} - ${Math.abs(diaReduzido - anoReduzido)} = ${Math.abs(Math.abs(diaReduzido - mesReduzido) - Math.abs(diaReduzido - anoReduzido))}`;
 
       // Desafios Kármicos
-      const primeiroDesafio = primeiraHeranca;
-      const segundoDesafio = ajustarDesafio(segundaHeranca);
-      const terceiroDesafio = `${primeiroDesafio} - ${segundoDesafio}`;
+      const primeiroDesafio = `${diaReduzido} - ${mesReduzido} = ${Math.abs(diaReduzido - mesReduzido)}`;
+      const segundoDesafio = `${diaReduzido} - ${anoReduzido} = ${ajustarDesafio(Math.abs(diaReduzido - anoReduzido))}`;
+      const terceiroDesafio = `${Math.abs(diaReduzido - mesReduzido)} - ${ajustarDesafio(Math.abs(diaReduzido - anoReduzido))}`;
 
-      const karmaAcumulado = primeiraHeranca + segundaHeranca + primeiroDesafio + segundoDesafio;
+      const karmaAcumulado = Math.abs(diaReduzido - mesReduzido) + Math.abs(diaReduzido - anoReduzido) + Math.abs(diaReduzido - mesReduzido) + ajustarDesafio(Math.abs(diaReduzido - anoReduzido));
 
       // Ciclos de Vida
-      const primeiroCiclo = reduzirComMestres(diaReduzido + mesReduzido);
-      const segundoCiclo = reduzirComMestres(diaReduzido + anoReduzido);
-      const terceiroCiclo = reduzirComMestres(primeiroCiclo + segundoCiclo);
-      const quartoCiclo = reduzirComMestres(mesReduzido + anoReduzido);
+      const primeiroCiclo = diaReduzido + mesReduzido;
+      const segundoCiclo = diaReduzido + anoReduzido;
+      const terceiroCiclo = primeiroCiclo + segundoCiclo;
+      const quartoCiclo = mesReduzido + anoReduzido;
+
+      const primeiroCicloReduzido = reduzirSemMestres(primeiroCiclo);
+      const segundoCicloReduzido = reduzirSemMestres(segundoCiclo);
+      const terceiroCicloReduzido = reduzirSemMestres(terceiroCiclo);
+      const quartoCicloReduzido = reduzirSemMestres(quartoCiclo);
 
       const inicio1 = 0;
       const fim1 = 36 - caminhoVidaFinal;
@@ -174,7 +178,7 @@
       const inicio4 = fim3 + 1;
       const fim4 = inicio4 + 9 - 1;
 
-      const objetivoKarmico = primeiroCiclo + segundoCiclo + terceiroCiclo + quartoCiclo;
+      const objetivoKarmico = primeiroCicloReduzido + segundoCicloReduzido + terceiroCicloReduzido + quartoCicloReduzido;
 
       // Números do Nome
       const numeroExpressao = reduzirComMestres(somaLetras(nome));
@@ -184,18 +188,17 @@
       const numeroImagem = reduzirComMestres(somaLetras(consoantes));
 
       const pontoForte = numeroExpressao + numeroAlma + numeroImagem;
-      const numeroFinal = caminhoVidaFinal + pontoForte;
-      const numeroPoder = numeroExpressao + caminhoVidaFinal;
-      const numeroStress = numeroExpressao - caminhoVidaFinal;
-      const numeroReativo = numeroFinal + numeroFinal;
+      const numeroFinal = reduzirComMestres(caminhoVidaFinal + pontoForte);
+      const numeroPoder = reduzirComMestres(numeroExpressao + caminhoVidaFinal);
+      const numeroStress = reduzirComMestres(numeroExpressao - caminhoVidaFinal);
+      const numeroReativo = reduzirComMestres(numeroFinal + numeroFinal);
 
       // Mostrar resultados
       document.getElementById("resultado").innerHTML = `
         <div class="bloco">
           <strong>Caminho de Vida <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-cv')">ⓘ</span></strong><br>
           <div id="info-cv" style="display:none; font-size:14px; margin:6px 0;">
-            O Caminho de Vida representa a direção principal da tua vida, as aprendizagens fundamentais e o tipo de experiências que és chamada a viver ao longo do teu percurso.
-            É calculado através da soma de todos os algarismos da data de nascimento.
+            Representa a direção principal da tua vida e o tipo de experiências que és chamada a viver.
           </div>
           <span class="numero-destaque">${caminhoVidaDesdobrado} / ${caminhoVidaFinal}</span>
         </div>
@@ -203,7 +206,7 @@
         <div class="bloco">
           <strong>Via de Missão <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-vm')">ⓘ</span></strong><br>
           <div id="info-vm" style="display:none; font-size:14px; margin:6px 0;">
-            A Via de Missão indica de que forma colocas o teu potencial em ação no mundo.
+            Indica de que forma colocas o teu potencial em ação no mundo.
           </div>
           <span class="numero-destaque">${viaMissaoDesdobrada} / ${viaMissaoFinal}</span>
         </div>
@@ -211,7 +214,7 @@
         <div class="bloco">
           <strong>Heranças Kármicas <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-herancas')">ⓘ</span></strong><br>
           <div id="info-herancas" style="display:none; font-size:14px; margin:6px 0;">
-            Mostram talentos ou bloqueios herdados de vidas passadas. Cada herança é analisada aos pares.
+            Talentos ou bloqueios herdados de vidas passadas, analisados aos pares.
           </div>
           1ª Herança: <span class="numero-destaque">${primeiraHeranca}</span><br>
           2ª Herança: <span class="numero-destaque">${segundaHeranca}</span><br>
@@ -221,7 +224,7 @@
         <div class="bloco">
           <strong>Desafios Kármicos <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-desafios')">ⓘ</span></strong><br>
           <div id="info-desafios" style="display:none; font-size:14px; margin:6px 0;">
-            Indicadores de obstáculos ou lições que precisas de superar. Vistos aos pares.
+            Obstáculos ou lições que precisas de superar, vistos aos pares.
           </div>
           1º Desafio: <span class="numero-destaque">${primeiroDesafio}</span><br>
           2º Desafio: <span class="numero-destaque">${segundoDesafio}</span><br>
@@ -231,19 +234,19 @@
         <div class="bloco">
           <strong>Ciclos de Vida (Pináculos) <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-ciclos')">ⓘ</span></strong><br>
           <div id="info-ciclos" style="display:none; font-size:14px; margin:6px 0;">
-            Mostram diferentes fases da tua vida, desafios e oportunidades de cada período.
+            Diferentes fases da tua vida, desafios e oportunidades de cada período.
           </div>
-          1º Ciclo: <span class="numero-destaque">${primeiroCiclo}</span> (dos ${inicio1} aos ${fim1} anos)<br>
-          2º Ciclo: <span class="numero-destaque">${segundoCiclo}</span> (dos ${inicio2} aos ${fim2} anos)<br>
-          3º Ciclo: <span class="numero-destaque">${terceiroCiclo}</span> (dos ${inicio3} aos ${fim3} anos)<br>
-          4º Ciclo: <span class="numero-destaque">${quartoCiclo}</span> (dos ${inicio4} aos ${fim4} anos)<br>
+          1º Ciclo: <span class="numero-destaque">${primeiroCicloReduzido}</span> (dos ${inicio1} aos ${fim1} anos)<br>
+          2º Ciclo: <span class="numero-destaque">${segundoCicloReduzido}</span> (dos ${inicio2} aos ${fim2} anos)<br>
+          3º Ciclo: <span class="numero-destaque">${terceiroCicloReduzido}</span> (dos ${inicio3} aos ${fim3} anos)<br>
+          4º Ciclo: <span class="numero-destaque">${quartoCicloReduzido}</span> (dos ${inicio4} aos ${fim4} anos)<br>
           Objetivo Kármico: <span class="numero-destaque">${objetivoKarmico}</span>
         </div>
 
         <div class="bloco">
           <strong>Número de Expressão <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-expressao')">ⓘ</span></strong><br>
           <div id="info-expressao" style="display:none; font-size:14px; margin:6px 0;">
-            Mostra talentos, personalidade e a forma como te expressas.
+            Talentos, personalidade e forma de te expressares.
           </div>
           <span class="numero-destaque">${numeroExpressao}</span>
         </div>
@@ -251,7 +254,7 @@
         <div class="bloco">
           <strong>Número de Alma <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-alma')">ⓘ</span></strong><br>
           <div id="info-alma" style="display:none; font-size:14px; margin:6px 0;">
-            Revela desejos, motivações internas e o que te faz sentir realizada.
+            Desejos internos, motivações e o que te faz sentir realizada.
           </div>
           <span class="numero-destaque">${numeroAlma}</span>
         </div>
@@ -259,7 +262,7 @@
         <div class="bloco">
           <strong>Número de Imagem <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-imagem')">ⓘ</span></strong><br>
           <div id="info-imagem" style="display:none; font-size:14px; margin:6px 0;">
-            Mostra como os outros te percebem e como te apresentas.
+            Como os outros te percebem e como te apresentas.
           </div>
           <span class="numero-destaque">${numeroImagem}</span>
         </div>
@@ -274,10 +277,10 @@
 
         <div class="bloco">
           <strong>Número Final, Poder, Stress, Número Reativo</strong><br>
-          Número Final: <span class="numero-destaque">${numeroFinal}</span><br>
+          Número Final: <span class="numero-destaque">${numeroFinal} / ${reduzirComMestres(numeroFinal)}</span><br>
           Número do Poder: <span class="numero-destaque">${numeroPoder}</span><br>
           Número do Stress: <span class="numero-destaque">${numeroStress}</span><br>
-          Número Reativo: <span class="numero-destaque">${numeroReativo}</span>
+          Número Reativo: <span class="numero-destaque">${numeroReativo} / ${reduzirComMestres(numeroReativo)}</span>
         </div>
       `;
     }
