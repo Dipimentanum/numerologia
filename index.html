@@ -55,7 +55,7 @@
 
   <label>
     Nome completo:<br>
-    <input type="text" id="nome">
+    <input type="text" id="nome" placeholder="ex. Maria da Silva">
   </label>
   <br><br>
 
@@ -117,10 +117,6 @@
       return palavra.split('').map(letraParaNumero).reduce((a,b)=>a+b,0);
     }
 
-    function ajustarDesafio(num) {
-      return num === 9 ? 0 : num;
-    }
-
     function calcular() {
       const data = document.getElementById("data").value;
       const nome = document.getElementById("nome").value.replace(/\s+/g,'');
@@ -149,14 +145,17 @@
       // Heranças Kármicas
       const primeiraHeranca = `${diaReduzido} - ${mesReduzido} = ${Math.abs(diaReduzido - mesReduzido)}`;
       const segundaHeranca = `${diaReduzido} - ${anoReduzido} = ${Math.abs(diaReduzido - anoReduzido)}`;
-      const terceiraHeranca = `${Math.abs(diaReduzido - mesReduzido)} - ${Math.abs(diaReduzido - anoReduzido)} = ${Math.abs(Math.abs(diaReduzido - mesReduzido) - Math.abs(diaReduzido - anoReduzido))}`;
+      const terceiraHerancaPar = `${Math.abs(diaReduzido - mesReduzido)} - ${Math.abs(diaReduzido - anoReduzido)}`;
 
       // Desafios Kármicos
-      const primeiroDesafio = `${diaReduzido} - ${mesReduzido} = ${Math.abs(diaReduzido - mesReduzido)}`;
-      const segundoDesafio = `${diaReduzido} - ${anoReduzido} = ${ajustarDesafio(Math.abs(diaReduzido - anoReduzido))}`;
-      const terceiroDesafio = `${Math.abs(diaReduzido - mesReduzido)} - ${ajustarDesafio(Math.abs(diaReduzido - anoReduzido))}`;
+      const primeiroDesafio = terceiraHerancaPar; // par da 3ª herança
+      const segundoDesafio = `${mesReduzido} - ${anoReduzido}`;
+      const terceiroDesafioPar = `${Math.abs(Math.abs(diaReduzido - mesReduzido) - Math.abs(diaReduzido - anoReduzido))} - ${Math.abs(mesReduzido - anoReduzido)}`;
 
-      const karmaAcumulado = Math.abs(diaReduzido - mesReduzido) + Math.abs(diaReduzido - anoReduzido) + Math.abs(diaReduzido - mesReduzido) + ajustarDesafio(Math.abs(diaReduzido - anoReduzido));
+      // Karma Acumulado
+      const karmaAcumulado = Math.abs(Math.abs(diaReduzido - mesReduzido)) + Math.abs(Math.abs(diaReduzido - anoReduzido)) +
+                             Math.abs(Math.abs(Math.abs(diaReduzido - mesReduzido) - Math.abs(diaReduzido - anoReduzido))) +
+                             Math.abs(Math.abs(mesReduzido - anoReduzido));
 
       // Ciclos de Vida
       const primeiroCiclo = diaReduzido + mesReduzido;
@@ -218,7 +217,7 @@
           </div>
           1ª Herança: <span class="numero-destaque">${primeiraHeranca}</span><br>
           2ª Herança: <span class="numero-destaque">${segundaHeranca}</span><br>
-          3ª Herança (par): <span class="numero-destaque">${terceiraHeranca}</span>
+          3ª Herança (par): <span class="numero-destaque">${terceiraHerancaPar}</span>
         </div>
 
         <div class="bloco">
@@ -226,9 +225,10 @@
           <div id="info-desafios" style="display:none; font-size:14px; margin:6px 0;">
             Obstáculos ou lições que precisas de superar, vistos aos pares.
           </div>
-          1º Desafio: <span class="numero-destaque">${primeiroDesafio}</span><br>
-          2º Desafio: <span class="numero-destaque">${segundoDesafio}</span><br>
-          3º Desafio (par): <span class="numero-destaque">${terceiroDesafio}</span>
+          1º Desafio (par da 3ª herança): <span class="numero-destaque">${primeiroDesafio}</span><br>
+          2º Desafio (mês - ano): <span class="numero-destaque">${segundoDesafio}</span><br>
+          3º Desafio (par dos resultados anteriores): <span class="numero-destaque">${terceiroDesafioPar}</span><br>
+          Karma Acumulado: <span class="numero-destaque">${karmaAcumulado}</span>
         </div>
 
         <div class="bloco">
