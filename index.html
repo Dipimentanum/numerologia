@@ -48,23 +48,21 @@
       color: #2a7ae2;
       font-weight: bold;
     }
-.secao {
-  margin-top: 30px;
-  padding: 20px;
-  border-radius: 12px;
-  background-color: #eef5f2;
-}
-
-.secao h2 {
-  margin-top: 0;
-  color: #2f6f62;
-  border-bottom: 1px solid #cfded9;
-  padding-bottom: 6px;
-}
-
-.item {
-  margin-bottom: 12px;
-}
+    .secao {
+      margin-top: 30px;
+      padding: 20px;
+      border-radius: 12px;
+      background-color: #eef5f2;
+    }
+    .secao h2 {
+      margin-top: 0;
+      color: #2f6f62;
+      border-bottom: 1px solid #cfded9;
+      padding-bottom: 6px;
+    }
+    .item {
+      margin-bottom: 12px;
+    }
   </style>
 </head>
 <body>
@@ -85,62 +83,21 @@
   <button onclick="calcular()">Calcular</button>
   <button onclick="imprimirRelatorio()">Imprimir Relatório</button>
 
-  <div id="resultado" class="resultado"></div>
-<div class="secao">
-  <h2>📅 1ª Parte — A tua Data de Nascimento</h2>
-
-  <div class="item">
-    <strong>
-      Número de Vida
-      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-cv')">ⓘ</span>
-    </strong><br>
-    <div id="info-cv" style="display:none; font-size:14px; margin:6px 0;">
-      Representa o caminho que a tua alma escolheu seguir nesta vida.
-      É calculado através da soma de todos os algarismos da data de nascimento.
+  <div id="resultado" class="resultado">
+    <div style="color:#666">
+      Introduz o teu nome completo e a data de nascimento e carrega em "Calcular" para ver o relatório.
     </div>
-    <span class="numero-destaque">
-      ${caminhoVidaDesdobrado} / ${caminhoVidaFinal}
-    </span>
   </div>
 
-  <div class="item">
-    <strong>Dia de Nascimento</strong><br>
-    Vibração final: <span class="numero-destaque">${diaReduzido}</span>
-  </div>
-
-  <div class="item">
-    <strong>Mês de Nascimento</strong><br>
-    Vibração final: <span class="numero-destaque">${mesReduzido}</span>
-  </div>
-
-  <div class="item">
-    <strong>Ano de Nascimento</strong><br>
-    Vibração final: <span class="numero-destaque">${anoReduzido}</span>
-  </div>
-
-  <div class="item">
-    <strong>
-      Via de Missão
-      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-vm')">ⓘ</span>
-    </strong><br>
-    <div id="info-vm" style="display:none; font-size:14px; margin:6px 0;">
-      Indica de que forma colocas o teu potencial em ação no mundo.
-      Resulta da soma do dia e do mês de nascimento.
-    </div>
-    <span class="numero-destaque">
-      ${viaMissaoDesdobrada} / ${viaMissaoFinal}
-    </span>
-  </div>
-</div>
-  
   <script>
     function toggleInfo(id) {
       const el = document.getElementById(id);
+      if (!el) return;
       el.style.display = el.style.display === "none" ? "block" : "none";
     }
 
     function reduzirSemMestres(numero) {
-      let atual = numero;
+      let atual = Number(numero) || 0;
       while (atual > 9) {
         atual = atual.toString().split('').map(Number).reduce((a,b)=>a+b,0);
       }
@@ -148,7 +105,7 @@
     }
 
     function reduzirComMestres(numero) {
-      let atual = numero;
+      let atual = Number(numero) || 0;
       while (atual > 9) {
         if ([11,22,33,44].includes(atual)) return atual;
         atual = atual.toString().split('').map(Number).reduce((a,b)=>a+b,0);
@@ -157,8 +114,8 @@
     }
 
     function desdobramentoComMestres(numero) {
-      let soma = numero;
-      let passos = [numero];
+      let soma = Number(numero) || 0;
+      const passos = [soma];
       while (soma > 9) {
         if ([11,22,33,44].includes(soma)) break;
         soma = soma.toString().split('').map(Number).reduce((a,b)=>a+b,0);
@@ -173,29 +130,41 @@
         J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
         S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
       };
-      return mapa[letra.toUpperCase()] || 0;
+      return mapa[(letra || '').toUpperCase()] || 0;
     }
 
     function somaLetras(palavra) {
+      if (!palavra) return 0;
       return palavra.split('').map(letraParaNumero).reduce((a,b)=>a+b,0);
     }
 
     function calcular() {
-      const data = document.getElementById("data").value;
-      const nome = document.getElementById("nome").value.replace(/\s+/g,'');
-      if (!data || !nome) {
+      const dataVal = document.getElementById("data").value;
+      const nomeRaw = document.getElementById("nome").value || "";
+      const nome = nomeRaw.replace(/\s+/g,'').trim();
+
+      if (!dataVal || nome.length === 0) {
         alert("Por favor, introduz a data de nascimento e o nome completo.");
         return;
       }
 
-      const [ano, mes, dia] = data.split("-").map(Number);
+      const parts = dataVal.split("-");
+      if (parts.length !== 3) {
+        alert("Data com formato inválido. Usa o seletor de data.");
+        return;
+      }
+
+      const [anoStr, mesStr, diaStr] = parts;
+      const ano = Number(anoStr);
+      const mes = Number(mesStr);
+      const dia = Number(diaStr);
 
       const diaReduzido = reduzirSemMestres(dia);
       const mesReduzido = reduzirSemMestres(mes);
       const anoReduzido = reduzirSemMestres(ano);
 
       // Caminho de Vida
-      const digitosData = data.replaceAll("-", "").split("").map(Number);
+      const digitosData = dataVal.replace(/-/g, "").split("").map(Number);
       const somaCaminhoVida = digitosData.reduce((a,b)=>a+b,0);
       const caminhoVidaFinal = reduzirComMestres(somaCaminhoVida);
       const caminhoVidaDesdobrado = desdobramentoComMestres(somaCaminhoVida);
@@ -244,9 +213,9 @@
 
       // Números do Nome
       const numeroExpressao = reduzirComMestres(somaLetras(nome));
-      const vogais = nome.replace(/[^AEIOU]/gi,'');
+      const vogais = nomeRaw.replace(/[^AEIOU]/gi,'');
       const numeroAlma = reduzirComMestres(somaLetras(vogais));
-      const consoantes = nome.replace(/[^BCDFGHJKLMNPQRSTVWXYZ]/gi,'');
+      const consoantes = nomeRaw.replace(/[^BCDFGHJKLMNPQRSTVWXYZ]/gi,'');
       const numeroImagem = reduzirComMestres(somaLetras(consoantes));
 
       const pontoForte = numeroExpressao + numeroAlma + numeroImagem;
@@ -351,20 +320,31 @@
           Número Reativo: <span class="numero-destaque">${numeroReativoReduzido}</span>
         </div>
       `;
+      // Scroll to results
+      document.getElementById('resultado').scrollIntoView({ behavior: 'smooth' });
     }
 
     function imprimirRelatorio() {
       const conteudo = document.getElementById('resultado').innerHTML;
+      if (!conteudo || conteudo.trim() === "" || conteudo.includes("Introduz o teu nome")) {
+        alert("Não há nada para imprimir. Calcula primeiro o relatório.");
+        return;
+      }
       const janela = window.open('', '', 'width=800,height=600');
+      if (!janela) {
+        alert("Impossível abrir nova janela — verifica o bloqueador de pop-ups.");
+        return;
+      }
       janela.document.write('<html><head><title>Relatório de Numerologia</title>');
-      janela.document.write('<style>body{font-family:Arial,sans-serif;line-height:1.6;padding:20px;} strong{font-size:18px;} .numero-destaque{color:#2a7ae2;font-weight:bold;}</style>');
+      janela.document.write('<meta charset="utf-8">');
+      janela.document.write('<style>body{font-family:Arial,sans-serif;line-height:1.6;padding:20px;} strong{font-size:18px;} .numero-destaque{color:#2a7ae2;font-weight:bold;} .bloco{margin-bottom:12px;padding:8px;border-radius:6px;background:#f7f7f7;}</style>');
       janela.document.write('</head><body>');
       janela.document.write(conteudo);
       janela.document.write('</body></html>');
       janela.document.close();
       janela.focus();
       janela.print();
-      janela.close();
+      // not closing the window immediately to let printing complete; user can close it
     }
   </script>
 </body>
