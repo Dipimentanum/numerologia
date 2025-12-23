@@ -48,6 +48,23 @@
       color: #2a7ae2;
       font-weight: bold;
     }
+.secao {
+  margin-top: 30px;
+  padding: 20px;
+  border-radius: 12px;
+  background-color: #eef5f2;
+}
+
+.secao h2 {
+  margin-top: 0;
+  color: #2f6f62;
+  border-bottom: 1px solid #cfded9;
+  padding-bottom: 6px;
+}
+
+.item {
+  margin-bottom: 12px;
+}
   </style>
 </head>
 <body>
@@ -69,7 +86,53 @@
   <button onclick="imprimirRelatorio()">Imprimir Relatório</button>
 
   <div id="resultado" class="resultado"></div>
+<div class="secao">
+  <h2>📅 1ª Parte — A tua Data de Nascimento</h2>
 
+  <div class="item">
+    <strong>
+      Número de Vida
+      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-cv')">ⓘ</span>
+    </strong><br>
+    <div id="info-cv" style="display:none; font-size:14px; margin:6px 0;">
+      Representa o caminho que a tua alma escolheu seguir nesta vida.
+      É calculado através da soma de todos os algarismos da data de nascimento.
+    </div>
+    <span class="numero-destaque">
+      ${caminhoVidaDesdobrado} / ${caminhoVidaFinal}
+    </span>
+  </div>
+
+  <div class="item">
+    <strong>Dia de Nascimento</strong><br>
+    Vibração final: <span class="numero-destaque">${diaReduzido}</span>
+  </div>
+
+  <div class="item">
+    <strong>Mês de Nascimento</strong><br>
+    Vibração final: <span class="numero-destaque">${mesReduzido}</span>
+  </div>
+
+  <div class="item">
+    <strong>Ano de Nascimento</strong><br>
+    Vibração final: <span class="numero-destaque">${anoReduzido}</span>
+  </div>
+
+  <div class="item">
+    <strong>
+      Via de Missão
+      <span style="cursor:pointer; color:#555;" onclick="toggleInfo('info-vm')">ⓘ</span>
+    </strong><br>
+    <div id="info-vm" style="display:none; font-size:14px; margin:6px 0;">
+      Indica de que forma colocas o teu potencial em ação no mundo.
+      Resulta da soma do dia e do mês de nascimento.
+    </div>
+    <span class="numero-destaque">
+      ${viaMissaoDesdobrada} / ${viaMissaoFinal}
+    </span>
+  </div>
+</div>
+  
   <script>
     function toggleInfo(id) {
       const el = document.getElementById(id);
