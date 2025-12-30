@@ -269,11 +269,15 @@
 
     // Formata a exibição do número: se o desdobramento for igual ao final, mostra só o número final
     function formatNumeroDisplay(desdobramentoStr, numeroFinal) {
-      if (!desdobramentoStr) return String(numeroFinal);
-      // normalizar espaços
+      const finalStr = String(numeroFinal);
+      if (!desdobramentoStr) return finalStr;
       const des = desdobramentoStr.toString().trim();
-      if (des === String(numeroFinal)) return String(numeroFinal);
-      return `${des} / ${numeroFinal}`;
+      // separar por setas (→) — também funciona se usares '->' ou espaços em redor
+      const partes = des.split('→').map(s => s.trim()).filter(Boolean);
+      const ultimo = partes.length ? partes[partes.length - 1] : des;
+      // se o último passo do desdobramento for igual ao número final, mostra só o número final
+      if (ultimo === finalStr) return finalStr;
+      return `${des} / ${finalStr}`;
     }
 
     function letraParaNumero(letra) {
