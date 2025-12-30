@@ -227,7 +227,7 @@
 
     <div id="resultado" class="resultado card">
       <div style="color:#6b7280">
-        Introduz o nome completo e a data de nascimento e carrega em "Calcular" para ver o relatório.
+        Introduz o teu nome completo e a data de nascimento e carrega em "Calcular" para ver o relatório.
       </div>
     </div>
   </div>
@@ -269,15 +269,11 @@
 
     // Formata a exibição do número: se o desdobramento for igual ao final, mostra só o número final
     function formatNumeroDisplay(desdobramentoStr, numeroFinal) {
-      const finalStr = String(numeroFinal);
-      if (!desdobramentoStr) return finalStr;
+      if (!desdobramentoStr) return String(numeroFinal);
+      // normalizar espaços
       const des = desdobramentoStr.toString().trim();
-      // separar por setas (→) — também funciona se usares '->' ou espaços em redor
-      const partes = des.split('→').map(s => s.trim()).filter(Boolean);
-      const ultimo = partes.length ? partes[partes.length - 1] : des;
-      // se o último passo do desdobramento for igual ao número final, mostra só o número final
-      if (ultimo === finalStr) return finalStr;
-      return `${des} / ${finalStr}`;
+      if (des === String(numeroFinal)) return String(numeroFinal);
+      return `${des} / ${numeroFinal}`;
     }
 
     function letraParaNumero(letra) {
