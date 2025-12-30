@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Calculadora de Numerologia</title>
-
-  <!-- Google Font -->
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
   <style>
@@ -19,7 +17,6 @@
       --danger:#ef4444;
       --radius:12px;
     }
-
     *{box-sizing:border-box}
     html,body{height:100%}
     body {
@@ -37,29 +34,13 @@
       align-items:flex-start;
     }
 
-    .wrap{
-      width:100%;
-      max-width:980px;
-      margin:0 auto;
-    }
+    .wrap{width:100%; max-width:980px; margin:0 auto;}
 
     header.app-header{
-      display:flex;
-      align-items:center;
-      gap:16px;
-      margin-bottom:18px;
+      display:flex; align-items:center; gap:16px; margin-bottom:18px;
     }
-    header h1{
-      margin:0;
-      font-size:20px;
-      font-weight:600;
-      color:#0b1220;
-    }
-    header p {
-      margin:0;
-      color:var(--muted);
-      font-size:13px;
-    }
+    header h1{margin:0; font-size:20px; font-weight:600; color:#0b1220;}
+    header p {margin:0; color:var(--muted); font-size:13px;}
 
     .card {
       background:var(--card);
@@ -69,27 +50,10 @@
       margin-bottom:16px;
     }
 
-    .controls{
-      display:grid;
-      grid-template-columns: 1fr 220px;
-      gap:12px;
-      align-items:end;
-    }
-
-    label{
-      display:block;
-      font-size:13px;
-      color:var(--muted);
-    }
-
+    .controls{display:grid; grid-template-columns: 1fr 220px; gap:12px; align-items:end;}
+    label{display:block; font-size:13px; color:var(--muted);}
     input[type="text"], input[type="date"]{
-      width:100%;
-      padding:10px 12px;
-      border-radius:8px;
-      border:1px solid #e6eef8;
-      background:#fbfdff;
-      font-size:15px;
-      outline:none;
+      width:100%; padding:10px 12px; border-radius:8px; border:1px solid #e6eef8; background:#fbfdff; font-size:15px; outline:none;
       transition:box-shadow .15s, border-color .15s;
     }
     input[type="text"]:focus, input[type="date"]:focus{
@@ -97,53 +61,32 @@
       border-color: rgba(37,99,235,0.5);
     }
 
-    .buttons{
-      display:flex;
-      gap:10px;
-      flex-direction:column;
-    }
+    .buttons{display:flex; gap:10px; flex-direction:column;}
     .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      gap:8px;
-      padding:10px 12px;
-      border-radius:10px;
-      border:none;
-      cursor:pointer;
-      font-weight:600;
-      font-size:14px;
+      display:inline-flex; align-items:center; justify-content:center; gap:8px;
+      padding:10px 12px; border-radius:10px; border:none; cursor:pointer; font-weight:600; font-size:14px;
       transition:transform .08s ease, box-shadow .12s ease;
     }
     .btn:active{transform:translateY(1px)}
     .btn-primary{
       background:linear-gradient(180deg,var(--accent) 0%, #1749d1 100%);
-      color:white;
-      box-shadow: 0 6px 18px rgba(37,99,235,0.14);
+      color:white; box-shadow: 0 6px 18px rgba(37,99,235,0.14);
     }
     .btn-ghost{
-      background:transparent;
-      color:var(--accent);
-      border:1px solid rgba(37,99,235,0.08);
+      background:transparent; color:var(--accent); border:1px solid rgba(37,99,235,0.08);
     }
 
     .result-grid{
-      display:grid;
-      grid-template-columns: repeat(auto-fill,minmax(260px,1fr));
-      gap:12px;
+      display:grid; grid-template-columns: repeat(auto-fill,minmax(260px,1fr)); gap:12px;
     }
-
     .resultado {
-      margin-top:18px;
-      padding:16px;
-      border-radius:10px;
+      margin-top:18px; padding:16px; border-radius:10px;
       background:linear-gradient(180deg,#ffffff, #fbfdff);
       box-shadow: 0 8px 28px rgba(2,6,23,0.04);
     }
 
     .bloco {
-      padding:12px;
-      border-radius:9px;
+      padding:12px; border-radius:9px;
       background: linear-gradient(180deg, #ffffff, #fbfcff);
       border:1px solid #eef5ff;
       transition:transform .12s ease, box-shadow .12s ease;
@@ -152,274 +95,216 @@
       transform:translateY(-4px);
       box-shadow: 0 14px 40px rgba(8,15,44,0.06);
     }
-
     .bloco strong { display:flex; align-items:center; gap:8px; font-size:15px; }
     .numero-destaque { color:var(--accent); font-weight:700; font-size:18px; }
-
-    .info-toggle {
-      cursor:pointer;
-      color:var(--muted);
-      font-size:13px;
-      border:none;
-      background:transparent;
-      padding:0;
-    }
+    .info-toggle { cursor:pointer; color:var(--muted); font-size:13px; border:none; background:transparent; padding:0; }
     .info-body { display:none; margin-top:8px; color:#374151; font-size:13px; }
-
     .small { font-size:13px; color:var(--muted) }
 
-    /* responsive */
     @media (max-width:760px){
       .controls { grid-template-columns: 1fr; }
       .buttons { flex-direction:row; }
       header h1{ font-size:18px }
     }
 
-    /* print styles */
     @media print{
       body{background:transparent;padding:0}
       .card, .resultado{box-shadow:none;border-radius:0}
       .controls, .buttons, header { display:none !important; }
       .bloco { page-break-inside:avoid; border:1px solid #f0f0f0; }
     }
-
-    /* info icon inline SVG style */
-    .icon {
-      width:18px;height:18px;display:inline-block;vertical-align:middle;
-    }
+    .icon { width:18px;height:18px;display:inline-block;vertical-align:middle; }
   </style>
 </head>
 <body>
-  <div class="wrap">
-    <header class="app-header">
-      <div>
-        <h1>Calculadora de Numerologia</h1>
-        <p>Introduz o teu nome e data de nascimento para obter o relatório numerológico.</p>
-      </div>
-    </header>
+<div class="wrap">
+  <header class="app-header">
+    <div>
+      <h1>Calculadora de Numerologia</h1>
+      <p>Introduz o teu nome e data de nascimento para obter o relatório numerológico.</p>
+    </div>
+  </header>
 
-    <div class="card">
-      <form id="form" onsubmit="event.preventDefault(); calcular();" aria-label="Formulário de cálculos numerológicos">
-        <div class="controls">
-          <div>
-            <label for="nome">Nome completo</label>
-            <input type="text" id="nome" placeholder="ex. Maria da Silva" autocomplete="name" />
-            <div style="height:8px"></div>
-            <label for="data">Data de nascimento</label>
-            <input type="date" id="data" />
-          </div>
-
-          <div class="buttons" aria-hidden="false" style="align-self:start">
-            <button type="button" class="btn btn-primary" onclick="calcular()" aria-label="Calcular relatório">
-              <!-- simple SVG icon -->
-              <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-              Calcular
-            </button>
-            <button type="button" class="btn btn-ghost" onclick="imprimirRelatorio()" aria-label="Imprimir relatório">
-              Imprimir Relatório
-            </button>
-          </div>
+  <div class="card">
+    <form id="form" onsubmit="event.preventDefault(); calcular();" aria-label="Formulário de cálculos numerológicos">
+      <div class="controls">
+        <div>
+          <label for="nome">Nome completo</label>
+          <input type="text" id="nome" placeholder="ex. Maria da Silva" autocomplete="name" />
+          <div style="height:8px"></div>
+          <label for="data">Data de nascimento</label>
+          <input type="date" id="data" />
         </div>
-      </form>
-    </div>
-
-    <div id="resultado" class="resultado card">
-      <div style="color:#6b7280">
-        Introduz o teu nome completo e a data de nascimento e carrega em "Calcular" para ver o relatório.
+        <div class="buttons" aria-hidden="false" style="align-self:start">
+          <button type="button" class="btn btn-primary" onclick="calcular()" aria-label="Calcular relatório">
+            <svg class="icon" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            Calcular
+          </button>
+          <button type="button" class="btn btn-ghost" onclick="imprimirRelatorio()" aria-label="Imprimir relatório">
+            Imprimir Relatório
+          </button>
+        </div>
       </div>
-    </div>
+    </form>
   </div>
 
-  <script>
-    function toggleInfo(id) {
-      const el = document.getElementById(id);
-      if (!el) return;
-      el.style.display = el.style.display === "none" ? "block" : "none";
-    }
+  <div id="resultado" class="resultado card">
+    <div style="color:#6b7280">
+      Introduz o teu nome completo e a data de nascimento e carrega em "Calcular" para ver o relatório.
+    </div>
+  </div>
+</div>
 
-    function reduzirSemMestres(numero) {
-      let atual = Number(numero) || 0;
-      while (atual > 9) {
-        atual = atual.toString().split('').map(Number).reduce((a,b)=>a+b,0);
-      }
-      return atual;
-    }
+<script>
+function toggleInfo(id){
+  const el=document.getElementById(id);
+  if(!el) return;
+  el.style.display=el.style.display==="none"?"block":"none";
+}
 
-    function reduzirComMestres(numero) {
-      let atual = Number(numero) || 0;
-      while (atual > 9) {
-        if ([11,22,33,44].includes(atual)) return atual;
-        atual = atual.toString().split('').map(Number).reduce((a,b)=>a+b,0);
-      }
-      return atual;
-    }
+function reduzirSemMestres(numero){
+  let atual=Number(numero)||0;
+  while(atual>9){
+    atual=atual.toString().split('').map(Number).reduce((a,b)=>a+b,0);
+  }
+  return atual;
+}
 
-    function desdobramentoComMestres(numero) {
-      let soma = Number(numero) || 0;
-      const passos = [soma];
-      while (soma > 9) {
-        if ([11,22,33,44].includes(soma)) break;
-        soma = soma.toString().split('').map(Number).reduce((a,b)=>a+b,0);
-        passos.push(soma);
-      }
-      return passos.join(" → ");
-    }
+function reduzirComMestres(numero){
+  let atual=Number(numero)||0;
+  while(atual>9){
+    if([11,22,33,44].includes(atual)) return atual;
+    atual=atual.toString().split('').map(Number).reduce((a,b)=>a+b,0);
+  }
+  return atual;
+}
 
-    // Formata a exibição do número: se o desdobramento for igual ao final, mostra só o número final
-    function formatNumeroDisplay(desdobramentoStr, numeroFinal) {
-      if (!desdobramentoStr) return String(numeroFinal);
-      // normalizar espaços
-      const des = desdobramentoStr.toString().trim();
-      if (des === String(numeroFinal)) return String(numeroFinal);
-      return `${des} / ${numeroFinal}`;
-    }
+function desdobramentoComMestres(numero){
+  let soma=Number(numero)||0;
+  const passos=[soma];
+  while(soma>9){
+    if([11,22,33,44].includes(soma)) break;
+    soma=soma.toString().split('').map(Number).reduce((a,b)=>a+b,0);
+    if(soma!==passos[passos.length-1]) passos.push(soma);
+  }
+  return passos.join(" → ");
+}
 
-    function letraParaNumero(letra) {
-      const mapa = {
-        A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
-        J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,
-        S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8
-      };
-      return mapa[(letra || '').toUpperCase()] || 0;
-    }
+function formatNumeroDisplay(desdobramentoStr){return desdobramentoStr||'';}
 
-    function somaLetras(palavra) {
-      if (!palavra) return 0;
-      return palavra.split('').map(letraParaNumero).reduce((a,b)=>a+b,0);
-    }
+function letraParaNumero(letra){
+  const mapa={A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,J:1,K:2,L:3,M:4,N:5,O:6,P:7,Q:8,R:9,S:1,T:2,U:3,V:4,W:5,X:6,Y:7,Z:8};
+  return mapa[(letra||'').toUpperCase()]||0;
+}
 
-    function calcular() {
-      const dataVal = document.getElementById("data").value;
-      const nomeRaw = document.getElementById("nome").value || "";
-      const nome = nomeRaw.replace(/\s+/g,'').trim();
+function somaLetras(palavra){if(!palavra)return 0; return palavra.split('').map(letraParaNumero).reduce((a,b)=>a+b,0);}
 
-      if (!dataVal || nome.length === 0) {
-        alert("Por favor, introduz a data de nascimento e o nome completo.");
-        return;
-      }
+function calcular(){
+  const dataVal=document.getElementById("data").value;
+  const nomeRaw=document.getElementById("nome").value||"";
+  const nome=nomeRaw.replace(/\s+/g,'').trim();
+  if(!dataVal||nome.length===0){alert("Por favor, introduz a data de nascimento e o nome completo.");return;}
 
-      const parts = dataVal.split("-");
-      if (parts.length !== 3) {
-        alert("Data com formato inválido. Usa o seletor de data.");
-        return;
-      }
+  const parts=dataVal.split("-");
+  if(parts.length!==3){alert("Data com formato inválido. Usa o seletor de data.");return;}
+  const [anoStr, mesStr, diaStr]=parts;
+  const ano=Number(anoStr), mes=Number(mesStr), dia=Number(diaStr);
 
-      const [anoStr, mesStr, diaStr] = parts;
-      const ano = Number(anoStr);
-      const mes = Number(mesStr);
-      const dia = Number(diaStr);
+  const diaReduzido=reduzirSemMestres(dia);
+  const mesReduzido=reduzirSemMestres(mes);
+  const anoReduzido=reduzirSemMestres(ano);
 
-      const diaReduzido = reduzirSemMestres(dia);
-      const mesReduzido = reduzirSemMestres(mes);
-      const anoReduzido = reduzirSemMestres(ano);
+  const digitosData=dataVal.replace(/-/g, "").split("").map(Number);
+  const somaCaminhoVida=digitosData.reduce((a,b)=>a+b,0);
+  const caminhoVidaFinal=reduzirComMestres(somaCaminhoVida);
+  const caminhoVidaDesdobrado=desdobramentoComMestres(somaCaminhoVida);
 
-      // Caminho de Vida
-      const digitosData = dataVal.replace(/-/g, "").split("").map(Number);
-      const somaCaminhoVida = digitosData.reduce((a,b)=>a+b,0);
-      const caminhoVidaFinal = reduzirComMestres(somaCaminhoVida);
-      const caminhoVidaDesdobrado = desdobramentoComMestres(somaCaminhoVida);
+  const somaMissao=diaReduzido+mesReduzido;
+  const viaMissaoFinal=reduzirComMestres(somaMissao);
+  const viaMissaoDesdobrada=desdobramentoComMestres(somaMissao);
 
-      // Via de Missão
-      const somaMissao = diaReduzido + mesReduzido;
-      const viaMissaoFinal = reduzirComMestres(somaMissao);
-      const viaMissaoDesdobrada = desdobramentoComMestres(somaMissao);
+  const primeiraHeranca=`${diaReduzido} - ${mesReduzido} = ${Math.abs(diaReduzido-mesReduzido)}`;
+  const segundaHeranca=`${diaReduzido} - ${anoReduzido} = ${Math.abs(diaReduzido-anoReduzido)}`;
+  const terceiraHerancaPar=`${Math.abs(diaReduzido-mesReduzido)} - ${Math.abs(diaReduzido-anoReduzido)}`;
 
-      // Heranças Kármicas
-      const primeiraHeranca = `${diaReduzido} - ${mesReduzido} = ${Math.abs(diaReduzido - mesReduzido)}`;
-      const segundaHeranca = `${diaReduzido} - ${anoReduzido} = ${Math.abs(diaReduzido - anoReduzido)}`;
-      const terceiraHerancaPar = `${Math.abs(diaReduzido - mesReduzido)} - ${Math.abs(diaReduzido - anoReduzido)}`;
+  const primeiroDesafio=terceiraHerancaPar;
+  const segundoDesafio=`${mesReduzido} - ${anoReduzido}`;
+  const terceiroDesafioPar=`${Math.abs(Math.abs(diaReduzido-mesReduzido)-Math.abs(diaReduzido-anoReduzido))} - ${Math.abs(mesReduzido-anoReduzido)}`;
 
-      // Desafios Kármicos
-      const primeiroDesafio = terceiraHerancaPar; 
-      const segundoDesafio = `${mesReduzido} - ${anoReduzido}`;
-      const terceiroDesafioPar = `${Math.abs(Math.abs(diaReduzido - mesReduzido) - Math.abs(diaReduzido - anoReduzido))} - ${Math.abs(mesReduzido - anoReduzido)}`;
+  const karmaAcumulado=Math.abs(Math.abs(diaReduzido-mesReduzido))+Math.abs(Math.abs(diaReduzido-anoReduzido))+
+                       Math.abs(Math.abs(Math.abs(diaReduzido-mesReduzido)-Math.abs(diaReduzido-anoReduzido)))+
+                       Math.abs(Math.abs(mesReduzido-anoReduzido));
 
-      // Karma Acumulado
-      const karmaAcumulado = Math.abs(Math.abs(diaReduzido - mesReduzido)) + Math.abs(Math.abs(diaReduzido - anoReduzido)) +
-                             Math.abs(Math.abs(Math.abs(diaReduzido - mesReduzido) - Math.abs(diaReduzido - anoReduzido))) +
-                             Math.abs(Math.abs(mesReduzido - anoReduzido));
+  const primeiroCiclo=diaReduzido+mesReduzido;
+  const segundoCiclo=diaReduzido+anoReduzido;
+  const terceiroCiclo=primeiroCiclo+segundoCiclo;
+  const quartoCiclo=mesReduzido+anoReduzido;
 
-      // Ciclos de Vida
-      const primeiroCiclo = diaReduzido + mesReduzido;
-      const segundoCiclo = diaReduzido + anoReduzido;
-      const terceiroCiclo = primeiroCiclo + segundoCiclo;
-      const quartoCiclo = mesReduzido + anoReduzido;
+  const primeiroCicloReduzido=reduzirSemMestres(primeiroCiclo);
+  const segundoCicloReduzido=reduzirSemMestres(segundoCiclo);
+  const terceiroCicloReduzido=reduzirSemMestres(terceiroCiclo);
+  const quartoCicloReduzido=reduzirSemMestres(quartoCiclo);
 
-      const primeiroCicloReduzido = reduzirSemMestres(primeiroCiclo);
-      const segundoCicloReduzido = reduzirSemMestres(segundoCiclo);
-      const terceiroCicloReduzido = reduzirSemMestres(terceiroCiclo);
-      const quartoCicloReduzido = reduzirSemMestres(quartoCiclo);
+  const inicio1=0, fim1=36-caminhoVidaFinal, inicio2=fim1+1, fim2=inicio2+8, inicio3=fim2+1, fim3=inicio3+8, inicio4=fim3+1, fim4=inicio4+8;
+  const objetivoKarmico=primeiroCicloReduzido+segundoCicloReduzido+terceiroCicloReduzido+quartoCicloReduzido;
 
-      const inicio1 = 0;
-      const fim1 = 36 - caminhoVidaFinal;
-      const inicio2 = fim1 + 1;
-      const fim2 = inicio2 + 9 - 1;
-      const inicio3 = fim2 + 1;
-      const fim3 = inicio3 + 9 - 1;
-      const inicio4 = fim3 + 1;
-      const fim4 = inicio4 + 9 - 1;
+  const numeroExpressao=reduzirComMestres(somaLetras(nome));
+  const vogais=nomeRaw.replace(/[^AEIOU]/gi,'');
+  const numeroAlma=reduzirComMestres(somaLetras(vogais));
+  const consoantes=nomeRaw.replace(/[^BCDFGHJKLMNPQRSTVWXYZ]/gi,'');
+  const numeroImagem=reduzirComMestres(somaLetras(consoantes));
 
-      const objetivoKarmico = primeiroCicloReduzido + segundoCicloReduzido + terceiroCicloReduzido + quartoCicloReduzido;
+  const pontoForte=numeroExpressao+numeroAlma+numeroImagem;
+  const pontoForteReduzido=reduzirComMestres(pontoForte);
 
-      // Números do Nome
-      const numeroExpressao = reduzirComMestres(somaLetras(nome));
-      const vogais = nomeRaw.replace(/[^AEIOU]/gi,'');
-      const numeroAlma = reduzirComMestres(somaLetras(vogais));
-      const consoantes = nomeRaw.replace(/[^BCDFGHJKLMNPQRSTVWXYZ]/gi,'');
-      const numeroImagem = reduzirComMestres(somaLetras(consoantes));
+  const numeroFinal=caminhoVidaFinal+pontoForteReduzido;
+  const numeroFinalReduzido=reduzirComMestres(numeroFinal);
+  const numeroPoder=numeroExpressao+caminhoVidaFinal;
+  const numeroStress=numeroExpressao-caminhoVidaFinal;
+  const numeroReativo=numeroFinalReduzido+numeroFinalReduzido;
+  const numeroReativoReduzido=reduzirComMestres(numeroReativo);
 
-      const pontoForte = numeroExpressao + numeroAlma + numeroImagem;
-      const pontoForteReduzido = reduzirComMestres(pontoForte);
+  const caminhoVidaDisplay=formatNumeroDisplay(caminhoVidaDesdobrado);
+  const viaMissaoDisplay=formatNumeroDisplay(viaMissaoDesdobrada);
 
-      const numeroFinal = caminhoVidaFinal + pontoForteReduzido;
-      const numeroFinalReduzido = reduzirComMestres(numeroFinal);
+  document.getElementById("resultado").innerHTML=`
+    <div class="result-grid">
 
-      const numeroPoder = numeroExpressao + caminhoVidaFinal;
-      const numeroStress = numeroExpressao - caminhoVidaFinal;
-      const numeroReativo = numeroFinalReduzido + numeroFinalReduzido;
-      const numeroReativoReduzido = reduzirComMestres(numeroReativo);
+      <div class="bloco">
+        <strong>Caminho de Vida <button class="info-toggle" onclick="toggleInfo('info-cv')">ⓘ</button></strong>
+        <div id="info-cv" class="info-body">Representa a direção principal da tua vida e o tipo de experiências que és chamada a viver.</div>
+        <div style="margin-top:8px"><span class="numero-destaque">${caminhoVidaDisplay}</span></div>
+      </div>
 
-      // Preparar exibições formatadas (mostrar apenas um número quando desdobramento === final)
-      const caminhoVidaDisplay = formatNumeroDisplay(caminhoVidaDesdobrado, caminhoVidaFinal);
-      const viaMissaoDisplay = formatNumeroDisplay(viaMissaoDesdobrada, viaMissaoFinal);
+      <div class="bloco">
+        <strong>Via de Missão <button class="info-toggle" onclick="toggleInfo('info-vm')">ⓘ</button></strong>
+        <div id="info-vm" class="info-body">Indica de que forma colocas o teu potencial em ação no mundo.</div>
+        <div style="margin-top:8px"><span class="numero-destaque">${viaMissaoDisplay}</span></div>
+      </div>
 
-      // Mostrar resultados
-      document.getElementById("resultado").innerHTML = `
-        <div class="result-grid">
-          <div class="bloco">
-            <strong>Caminho de Vida <button class="info-toggle" onclick="toggleInfo('info-cv')">ⓘ</button></strong>
-            <div id="info-cv" class="info-body">Representa a direção principal da tua vida e o tipo de experiências que és chamada a viver.</div>
-            <div style="margin-top:8px"><span class="numero-destaque">${caminhoVidaDisplay}</span></div>
-          </div>
+      <div class="bloco">
+        <strong>Heranças Kármicas <button class="info-toggle" onclick="toggleInfo('info-herancas')">ⓘ</button></strong>
+        <div id="info-herancas" class="info-body">Talentos ou bloqueios herdados de vidas passadas, analisados aos pares.</div>
+        <div style="margin-top:8px" class="small">
+          1ª Herança: <span class="numero-destaque">${primeiraHeranca}</span><br>
+          2ª Herança: <span class="numero-destaque">${segundaHeranca}</span><br>
+          3ª Herança (par): <span class="numero-destaque">${terceiraHerancaPar}</span>
+        </div>
+      </div>
 
-          <div class="bloco">
-            <strong>Via de Missão <button class="info-toggle" onclick="toggleInfo('info-vm')">ⓘ</button></strong>
-            <div id="info-vm" class="info-body">Indica de que forma colocas o teu potencial em ação no mundo.</div>
-            <div style="margin-top:8px"><span class="numero-destaque">${viaMissaoDisplay}</span></div>
-          </div>
+      <div class="bloco">
+        <strong>Desafios Kármicos <button class="info-toggle" onclick="toggleInfo('info-desafios')">ⓘ</button></strong>
+        <div id="info-desafios" class="info-body">Obstáculos ou lições que precisas de superar, vistos aos pares.</div>
+        <div style="margin-top:8px" class="small">
+          1º Desafio (par da 3ª herança): <span class="numero-destaque">${primeiroDesafio}</span><br>
+          2º Desafio (mês - ano): <span class="numero-destaque">${segundoDesafio}</span><br>
+          3º Desafio (par dos resultados anteriores): <span class="numero-destaque">${terceiroDesafioPar}</span><br>
+          Karma Acumulado: <span class="numero-destaque">${karmaAcumulado}</span>
+        </div>
+      </div>
 
-          <div class="bloco">
-            <strong>Heranças Kármicas <button class="info-toggle" onclick="toggleInfo('info-herancas')">ⓘ</button></strong>
-            <div id="info-herancas" class="info-body">Talentos ou bloqueios herdados de vidas passadas, analisados aos pares.</div>
-            <div style="margin-top:8px" class="small">
-              1ª Herança: <span class="numero-destaque">${primeiraHeranca}</span><br>
-              2ª Herança: <span class="numero-destaque">${segundaHeranca}</span><br>
-              3ª Herança (par): <span class="numero-destaque">${terceiraHerancaPar}</span>
-            </div>
-          </div>
-
-          <div class="bloco">
-            <strong>Desafios Kármicos <button class="info-toggle" onclick="toggleInfo('info-desafios')">ⓘ</button></strong>
-            <div id="info-desafios" class="info-body">Obstáculos ou lições que precisas de superar, vistos aos pares.</div>
-            <div style="margin-top:8px" class="small">
-              1º Desafio (par da 3ª herança): <span class="numero-destaque">${primeiroDesafio}</span><br>
-              2º Desafio (mês - ano): <span class="numero-destaque">${segundoDesafio}</span><br>
-              3º Desafio (par dos resultados anteriores): <span class="numero-destaque">${terceiroDesafioPar}</span><br>
-              Karma Acumulado: <span class="numero-destaque">${karmaAcumulado}</span>
-            </div>
-          </div>
 
           <div class="bloco">
             <strong>Ciclos de Vida (Pináculos) <button class="info-toggle" onclick="toggleInfo('info-ciclos')">ⓘ</button></strong>
