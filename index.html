@@ -267,6 +267,15 @@
       return passos.join(" → ");
     }
 
+    // Formata a exibição do número: se o desdobramento for igual ao final, mostra só o número final
+    function formatNumeroDisplay(desdobramentoStr, numeroFinal) {
+      if (!desdobramentoStr) return String(numeroFinal);
+      // normalizar espaços
+      const des = desdobramentoStr.toString().trim();
+      if (des === String(numeroFinal)) return String(numeroFinal);
+      return `${des} / ${numeroFinal}`;
+    }
+
     function letraParaNumero(letra) {
       const mapa = {
         A:1,B:2,C:3,D:4,E:5,F:6,G:7,H:8,I:9,
@@ -372,19 +381,23 @@
       const numeroReativo = numeroFinalReduzido + numeroFinalReduzido;
       const numeroReativoReduzido = reduzirComMestres(numeroReativo);
 
+      // Preparar exibições formatadas (mostrar apenas um número quando desdobramento === final)
+      const caminhoVidaDisplay = formatNumeroDisplay(caminhoVidaDesdobrado, caminhoVidaFinal);
+      const viaMissaoDisplay = formatNumeroDisplay(viaMissaoDesdobrada, viaMissaoFinal);
+
       // Mostrar resultados
       document.getElementById("resultado").innerHTML = `
         <div class="result-grid">
           <div class="bloco">
             <strong>Caminho de Vida <button class="info-toggle" onclick="toggleInfo('info-cv')">ⓘ</button></strong>
             <div id="info-cv" class="info-body">Representa a direção principal da tua vida e o tipo de experiências que és chamada a viver.</div>
-            <div style="margin-top:8px"><span class="numero-destaque">${caminhoVidaDesdobrado} / ${caminhoVidaFinal}</span></div>
+            <div style="margin-top:8px"><span class="numero-destaque">${caminhoVidaDisplay}</span></div>
           </div>
 
           <div class="bloco">
             <strong>Via de Missão <button class="info-toggle" onclick="toggleInfo('info-vm')">ⓘ</button></strong>
             <div id="info-vm" class="info-body">Indica de que forma colocas o teu potencial em ação no mundo.</div>
-            <div style="margin-top:8px"><span class="numero-destaque">${viaMissaoDesdobrada} / ${viaMissaoFinal}</span></div>
+            <div style="margin-top:8px"><span class="numero-destaque">${viaMissaoDisplay}</span></div>
           </div>
 
           <div class="bloco">
@@ -520,8 +533,8 @@
     // Função simples para escapar conteúdo que venha dos inputs (evita injection de HTML)
     function escapeHtml(str) {
       if (!str) return '';
-      return str.replace(/[&<>"']/g, function (m) {
-        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+      return str.replace(/[&<>"'\/]/g, function (m) {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":"&#39;","/":"&#47;"}[m];
       });
     }
 
