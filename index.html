@@ -330,21 +330,65 @@
         alert("Não há nada para imprimir. Calcula primeiro o relatório.");
         return;
       }
-      const janela = window.open('', '', 'width=800,height=600');
+
+      // Ler os campos atuais (para que o cabeçalho do relatório reflita o que está nos inputs)
+      const nomeVal = (document.getElementById('nome').value || '').trim();
+      const dataVal = document.getElementById('data').value || '';
+
+      // Formatar a data para um formato mais legível (PT)
+      let dataFormatada = dataVal;
+      if (dataVal) {
+        // dataVal é 'YYYY-MM-DD'
+        const d = new Date(dataVal + 'T00:00:00'); // evita timezone
+        if (!isNaN(d)) {
+          dataFormatada = d.toLocaleDateString('pt-PT', { day: '2-digit', month: '2-digit', year: 'numeric' });
+        }
+      }
+
+      const janela = window.open('', '', 'width=900,height=700');
       if (!janela) {
         alert("Impossível abrir nova janela — verifica o bloqueador de pop-ups.");
         return;
       }
-      janela.document.write('<html><head><title>Relatório de Numerologia</title>');
-      janela.document.write('<meta charset="utf-8">');
-      janela.document.write('<style>body{font-family:Arial,sans-serif;line-height:1.6;padding:20px;} strong{font-size:18px;} .numero-destaque{color:#2a7ae2;font-weight:bold;} .bloco{margin-bottom:12px;padding:8px;border-radius:6px;background:#f7f7f7;}</style>');
+
+      // Cabeçalho com nome e data + estilo para impressão
+      const css = `
+        body{font-family:Arial,sans-serif;line-height:1.6;padding:20px;color:#111;}
+        h1{margin-top:0;}
+        .header{margin-bottom:12px;border-bottom:1px solid #ddd;padding-bottom:8px;}
+        .info{margin-bottom:12px;font-size:15px;color:#333;}
+        .numero-destaque{color:#2a7ae2;font-weight:bold;}
+        .bloco{padding:10px;margin-bottom:10px;border-radius:6px;background:#f7f7f7;}
+      `;
+
+      const headerHtml = `
+        <div class="header">
+          <h1>Relatório de Numerologia</h1>
+          <div class="info"><strong>Nome:</strong> ${escapeHtml(nomeVal) || '—'}<br>
+          <strong>Data de nascimento:</strong> ${escapeHtml(dataFormatada) || '—'}</div>
+        </div>
+      `;
+
+      janela.document.write('<!doctype html><html><head><meta charset="utf-8"><title>Relatório de Numerologia</title>');
+      janela.document.write('<style>' + css + '</style>');
       janela.document.write('</head><body>');
+      janela.document.write(headerHtml);
       janela.document.write(conteudo);
       janela.document.write('</body></html>');
       janela.document.close();
       janela.focus();
-      janela.print();
-      // not closing the window immediately to let printing complete; user can close it
+      // esperar um pouco pode ajudar em alguns navegadores antes de imprimir
+      setTimeout(()=>janela.print(), 250);
+      // não fechar automaticamente para que o utilizador possa rever / guardar; se preferir fechar:
+      // setTimeout(()=>janela.close(), 1000);
+    }
+
+    // Função simples para escapar conteúdo que venha dos inputs (evita injection de HTML)
+    function escapeHtml(str) {
+      if (!str) return '';
+      return str.replace(/[&<>"']/g, function (m) {
+        return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m];
+      });
     }
   </script>
 </body>
