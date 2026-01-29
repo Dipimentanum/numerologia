@@ -262,7 +262,8 @@ function calcular(){
   const numeroFinal=caminhoVidaFinal+pontoForteReduzido;
   const numeroFinalReduzido=reduzirComMestres(numeroFinal);
   const numeroPoder=numeroExpressao+caminhoVidaFinal;
-  const numeroStress=numeroExpressao-caminhoVidaFinal;
+  // Corrigido: número de stress = valor absoluto do (Caminho de Vida - Número de Expressão)
+  const numeroStress=Math.abs(caminhoVidaFinal - numeroExpressao);
   const numeroReativo=numeroFinalReduzido+numeroFinalReduzido;
   const numeroReativoReduzido=reduzirComMestres(numeroReativo);
 
